@@ -1,5 +1,18 @@
 <?php
 
+$filepath = 'public://adaptivetheme/enso_light_files/enso_light.dynamic.css';
+if (file_exists($filepath)) {
+  drupal_add_css($filepath, array(
+    'preprocess' => TRUE,
+    'group' => CSS_THEME,
+    'weight' => 1000,
+    'media' => 'screen',
+    'every_page' => TRUE,
+    )
+  );
+}
+
+
 /**
  * @file
  * Process theme data.
