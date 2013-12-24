@@ -104,6 +104,69 @@ function enso_light_selector_form($name) {
     ),
     '#default_value' => theme_get_setting($name . '_bg_attachment'),
   );
+  // Override foreground colors checkbox
+  $form[$name . '_fieldset'][$name . '_override_fg_colors'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Override foreground colors'),
+    '#default_value' => theme_get_setting($name . '_override_fg_colors'),
+    '#tree' => FALSE,
+  );
+  // Foreground colors fieldset
+  $form[$name . '_fieldset'][$name . '_fg'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Foreground colors'),
+    '#states' => array(
+      // Hide foreground colors fieldset by default
+      'invisible' => array(
+        'input[name="' . $name . '_override_fg_colors"]' => array('checked' => FALSE),
+      ),
+    ),
+  );
+  // Color
+  $form[$name . '_fieldset'][$name . '_fg'][$name . '_color'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Color'),
+    '#default_value' => theme_get_setting($name . '_color'),
+  );
+  // Link color
+  $form[$name . '_fieldset'][$name . '_fg'][$name . '_link_color'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Link color'),
+    '#default_value' => theme_get_setting($name . '_link_color'),
+  );
+  // Link decoration
+  $form[$name . '_fieldset'][$name . '_fg'][$name . '_link_decoration'] = array(
+    '#type' => 'select',
+    '#title' => t('Link decoration'),
+    '#options' => array(
+      'none' => t('None'),
+      'underline' => t('Underline'),
+      'overline' => t('Overline'),
+      'line-through' => t('Line-through'),
+      'inherit' => t('Inherit'),
+    ),
+    '#default_value' => theme_get_setting($name . '_link_decoration'),
+  );
+  // Link hover and focus color
+  $form[$name . '_fieldset'][$name . '_fg'][$name . '_hover_color'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Link hover and focus color'),
+    '#default_value' => theme_get_setting($name . '_hover_color'),
+    //'#description' => t('Enter a valid CSS color value <em>e.g. red can be defined as #f00, #ff0000, rgb(255,0,0), rgba(255,0,0,0.0) or simply red. Write transparent for no color.</em>'),
+  );
+  // Link hover and focus decoration
+  $form[$name . '_fieldset'][$name . '_fg'][$name . '_hover_decoration'] = array(
+    '#type' => 'select',
+    '#title' => t('Link hover and focus decoration'),
+    '#options' => array(
+      'none' => t('None'),
+      'underline' => t('Underline'),
+      'overline' => t('Overline'),
+      'line-through' => t('Line-through'),
+      'inherit' => t('Inherit'),
+    ),
+    '#default_value' => theme_get_setting($name . '_hover_decoration'),
+  );
 
   return $form;
 }
@@ -138,11 +201,12 @@ function enso_light_selector_bg_save(&$form, &$form_state, $name) {
  */
 function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
 
-  $css = $css_selector . ' { ';
-
+  $css = '';
+  
+  // Generate background
+  $css .= $css_selector . ' { ';
   $bg_color = $form_state['values'][$name . '_bg_color'];
   $bg_color = $bg_color == '' ? 'transparent' : $bg_color;
-
   if ($form_state['values'][$name . '_use_bg_image'])  {
 
     $bg_url = 'url(\'' . file_create_url($form_state['values'][$name . '_bg_path']) . '\') ';
@@ -155,6 +219,38 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
   else {
     $css .= 'background-color: ' . $bg_color . ';';
   }
+  $css .= ' }' . "\n";
 
-  return $css . ' }' . "\n";
+  // Generate foreground color
+  if ($form_state['values'][$name . '_override_fg_colors'])  {
+    // Color
+    $css .= $css_selector . ' { ';
+    $color = $form_state['values'][$name . '_color'];
+    $color = $color == '' ? 'inherit' : $color;
+    $css .= 'color: ' . $color . ';';
+    $css .= ' }' . "\n";
+  }
+
+  // Generate foreground link colors
+  if ($form_state['values'][$name . '_override_fg_colors'])  {
+    // Link color & decoration
+    $css .= $css_selector . ' a { ';
+    $link_color = $form_state['values'][$name . '_link_color'];
+    $link_color = $link_color == '' ? 'inherit' : $link_color;
+    $css .= 'color: ' . $link_color . '; ';
+    $link_decoration = $form_state['values'][$name . '_link_decoration'];
+    $css .= 'text-decoration: ' . $link_decoration . ';';
+    $css .= ' }' . "\n";
+
+    // Link hover and focus color
+    $css .= $css_selector . ' a:hover, ' . $css_selector . ' a:focus { ';
+    $hover_color = $form_state['values'][$name . '_hover_color'];
+    $hover_color = $hover_color == '' ? 'inherit' : $hover_color;
+    $css .= 'color: ' . $hover_color . '; ';
+    $hover_decoration = $form_state['values'][$name . '_hover_decoration'];
+    $css .= 'text-decoration: ' . $hover_decoration . ';';
+    $css .= ' }' . "\n";
+  }
+
+  return $css;
 }
