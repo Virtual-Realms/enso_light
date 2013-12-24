@@ -15,7 +15,7 @@ function enso_light_selector_form($name) {
 
   $form[$name . '_fieldset'] = array(
     '#type' => 'fieldset',
-    '#title' => t(ucfirst($name)),
+    '#title' => t(ucfirst(str_replace(array('-', '_'), ' ', $name))),
     '#collapsible' => TRUE, 
     '#collapsed' => TRUE, 
   );
@@ -107,14 +107,14 @@ function enso_light_selector_form($name) {
   // Override foreground colors checkbox
   $form[$name . '_fieldset'][$name . '_override_fg_colors'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Override foreground colors'),
+    '#title' => t('Override foreground colors and decoration'),
     '#default_value' => theme_get_setting($name . '_override_fg_colors'),
     '#tree' => FALSE,
   );
   // Foreground colors fieldset
   $form[$name . '_fieldset'][$name . '_fg'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Foreground colors'),
+    '#title' => t('Foreground colors and decoration'),
     '#states' => array(
       // Hide foreground colors fieldset by default
       'invisible' => array(
