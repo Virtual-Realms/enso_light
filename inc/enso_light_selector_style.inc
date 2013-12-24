@@ -19,12 +19,42 @@ function enso_light_selector_form($name) {
     '#collapsible' => TRUE, 
     '#collapsed' => TRUE, 
   );
-  // Background color
-  $form[$name . '_fieldset'][$name . '_bg_color'] = array(
+  // Use background colors checkbox
+  $form[$name . '_fieldset'][$name . '_use_bg_colors'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use background color'),
+    '#default_value' => theme_get_setting($name . '_use_bg_colors'),
+    '#tree' => FALSE,
+  );
+  // Background color options fieldset
+  $form[$name . '_fieldset'][$name . '_bg_color_opts'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Background color options'),
+    '#states' => array(
+      // Hide background colors by default
+      'invisible' => array(
+        'input[name="' . $name . '_use_bg_colors"]' => array('checked' => FALSE),
+      ),
+    ),
+  );
+  // Background color(s)
+  $form[$name . '_fieldset'][$name . '_bg_color_opts'][$name . '_bg_color'] = array(
     '#type' => 'textfield',
-    '#title' => t('Background color'),
+    '#size' => '120',
+    '#title' => t('Background color(s)'),
     '#default_value' => theme_get_setting($name . '_bg_color'),
     '#description' => t('Enter a valid CSS color value <em>e.g. red can be defined as #f00, #ff0000, rgb(255,0,0), rgba(255,0,0,0.0) or simply red. Write transparent for no color.</em>'),
+  );
+  // Background gradient direction
+  $form[$name . '_fieldset'][$name . '_bg_color_opts'][$name . '_bg_gradient'] = array(
+    '#type' => 'select',
+    '#title' => t('Background gradient'),
+    '#options' => array(
+      'none' => t('None'),
+      'top-to-bottom' => t('Linear: Top to bottom'),
+      'left-to-right' => t('Linear: Left to right'),
+    ),
+    '#default_value' => theme_get_setting($name . '_bg_gradient'),
   );
   // Use background image checkbox
   $form[$name . '_fieldset'][$name . '_use_bg_image'] = array(
@@ -34,7 +64,7 @@ function enso_light_selector_form($name) {
     '#tree' => FALSE,
   );
   // Background image options fieldset
-  $form[$name . '_fieldset'][$name . '_bg'] = array(
+  $form[$name . '_fieldset'][$name . '_bg_image_opts'] = array(
     '#type' => 'fieldset',
     '#title' => t('Background image options'),
     '#states' => array(
@@ -51,20 +81,20 @@ function enso_light_selector_form($name) {
     $bg_path = file_uri_target($bg_path);
   }
   // Background image file name (disabled to prevent data entry)
-  $form[$name . '_fieldset'][$name . '_bg'][$name . '_bg_path'] = array(
+  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_path'] = array(
     '#type' => 'textfield',
     '#title' => t('Path to background image'),
     '#default_value' => $bg_path,
     '#disabled' => TRUE,
   );
   // Background image upload field
-  $form[$name . '_fieldset'][$name . '_bg'][$name . '_bg_upload'] = array(
+  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_upload'] = array(
     '#type' => 'file',
     '#title' => t('Upload background image'),
     '#description' => t('Upload a new image for the background.'),
   );
   // Background position
-  $form[$name . '_fieldset'][$name . '_bg'][$name . '_bg_position'] = array(
+  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_position'] = array(
     '#type' => 'select',
     '#title' => t('Background position'),
     '#options' => array(
@@ -81,7 +111,7 @@ function enso_light_selector_form($name) {
     '#default_value' => theme_get_setting($name . '_bg_position'),
   );
   // Background repeat
-  $form[$name . '_fieldset'][$name . '_bg'][$name . '_bg_repeat'] = array(
+  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_repeat'] = array(
     '#type' => 'select',
     '#title' => t('Background repeat'),
     '#options' => array(
@@ -94,7 +124,7 @@ function enso_light_selector_form($name) {
     '#default_value' => theme_get_setting($name . '_bg_repeat'),
   );
   // Background attachment
-  $form[$name . '_fieldset'][$name . '_bg'][$name . '_bg_attachment'] = array(
+  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_attachment'] = array(
     '#type' => 'select',
     '#title' => t('Background attachment'),
     '#options' => array(
@@ -104,38 +134,40 @@ function enso_light_selector_form($name) {
     ),
     '#default_value' => theme_get_setting($name . '_bg_attachment'),
   );
-  // Override foreground colors checkbox
-  $form[$name . '_fieldset'][$name . '_override_fg_colors'] = array(
+  // Use foreground colors checkbox
+  $form[$name . '_fieldset'][$name . '_use_fg'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Override foreground colors and decoration'),
-    '#default_value' => theme_get_setting($name . '_override_fg_colors'),
+    '#title' => t('Use foreground colors and decoration'),
+    '#default_value' => theme_get_setting($name . '_use_fg'),
     '#tree' => FALSE,
   );
-  // Foreground colors fieldset
-  $form[$name . '_fieldset'][$name . '_fg'] = array(
+  // Foreground options fieldset
+  $form[$name . '_fieldset'][$name . '_fg_opts'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Foreground colors and decoration'),
+    '#title' => t('Foreground options'),
     '#states' => array(
       // Hide foreground colors fieldset by default
       'invisible' => array(
-        'input[name="' . $name . '_override_fg_colors"]' => array('checked' => FALSE),
+        'input[name="' . $name . '_use_fg"]' => array('checked' => FALSE),
       ),
     ),
   );
   // Color
-  $form[$name . '_fieldset'][$name . '_fg'][$name . '_color'] = array(
+  $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_color'] = array(
     '#type' => 'textfield',
+    '#size' => '15',
     '#title' => t('Color'),
     '#default_value' => theme_get_setting($name . '_color'),
   );
   // Link color
-  $form[$name . '_fieldset'][$name . '_fg'][$name . '_link_color'] = array(
+  $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_link_color'] = array(
     '#type' => 'textfield',
+    '#size' => '15',
     '#title' => t('Link color'),
     '#default_value' => theme_get_setting($name . '_link_color'),
   );
   // Link decoration
-  $form[$name . '_fieldset'][$name . '_fg'][$name . '_link_decoration'] = array(
+  $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_link_decoration'] = array(
     '#type' => 'select',
     '#title' => t('Link decoration'),
     '#options' => array(
@@ -148,14 +180,15 @@ function enso_light_selector_form($name) {
     '#default_value' => theme_get_setting($name . '_link_decoration'),
   );
   // Link hover and focus color
-  $form[$name . '_fieldset'][$name . '_fg'][$name . '_hover_color'] = array(
+  $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_hover_color'] = array(
     '#type' => 'textfield',
+    '#size' => '15',
     '#title' => t('Link hover and focus color'),
     '#default_value' => theme_get_setting($name . '_hover_color'),
     //'#description' => t('Enter a valid CSS color value <em>e.g. red can be defined as #f00, #ff0000, rgb(255,0,0), rgba(255,0,0,0.0) or simply red. Write transparent for no color.</em>'),
   );
   // Link hover and focus decoration
-  $form[$name . '_fieldset'][$name . '_fg'][$name . '_hover_decoration'] = array(
+  $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_hover_decoration'] = array(
     '#type' => 'select',
     '#title' => t('Link hover and focus decoration'),
     '#options' => array(
@@ -176,7 +209,7 @@ function enso_light_selector_form($name) {
  */
 function enso_light_selector_bg_save(&$form, &$form_state, $name) {
   // Get the previous value
-  $previous = 'public://' . $form['enso'][$name][$name . '_fieldset'][$name . '_bg'][$name . '_bg_path']['#default_value'];
+  $previous = 'public://' . $form['enso'][$name][$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_path']['#default_value'];
   $file = file_save_upload($name . '_bg_upload');
   if ($file) {
     $parts = pathinfo($file->filename);
@@ -203,26 +236,53 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
 
   $css = '';
   
-  // Generate background
-  $css .= $css_selector . ' { ';
-  $bg_color = $form_state['values'][$name . '_bg_color'];
-  $bg_color = $bg_color == '' ? 'transparent' : $bg_color;
+  // Generate background image
   if ($form_state['values'][$name . '_use_bg_image'])  {
 
-    $bg_url = 'url(\'' . file_create_url($form_state['values'][$name . '_bg_path']) . '\') ';
-    $bg_position = $form_state['values'][$name . '_bg_position'] . ' ';
-    $bg_attachment = $form_state['values'][$name . '_bg_attachment'] . ' ';
-    $bg_repeat = $form_state['values'][$name . '_bg_repeat'] . ' ';
+    $bg_url = 'url(\'' . file_create_url($form_state['values'][$name . '_bg_path']) . '\')';
+    $bg_position = $form_state['values'][$name . '_bg_position'];
+    $bg_attachment = $form_state['values'][$name . '_bg_attachment'];
+    $bg_repeat = $form_state['values'][$name . '_bg_repeat'];
 
-    $css .= 'background: ' . $bg_url . $bg_position . $bg_attachment . $bg_repeat . $bg_color . ';';
+    //$css .= 'background: ' . $bg_url . $bg_position . $bg_attachment . $bg_repeat . $bg_color . ';';
+
+    $css .= $css_selector . ' { ';
+    $css .= 'background-image: ' . $bg_url . '; ';
+    $css .= 'background-position: ' . $bg_position . '; ';
+    $css .= 'background-attachment: ' . $bg_attachment . '; ';
+    $css .= 'background-repeat: ' . $bg_repeat . '; ';
+    //$css .= 'background-color: ' . $bg_color . ';';
+    $css .= ' }' . "\n";
   }
-  else {
-    $css .= 'background-color: ' . $bg_color . ';';
+
+  // Generate background color
+  if ($form_state['values'][$name . '_use_bg_colors'])  {
+    $bg_colors = explode('|', $form_state['values'][$name . '_bg_color']);
+    $bg_gradient = $form_state['values'][$name . '_bg_gradient'];
+    //$bg_color = $bg_color == '' ? 'transparent' : $bg_color;
+    //$css .= 'background-color: ' . $bg_color . ';';
+    if ($bg_gradient == 'none' && count($bg_colors) >= 1) {
+      $css .= $css_selector . ' { ';
+      $css .= 'background-color: ' . $bg_colors[0] . ';';
+      $css .= ' }' . "\n";
+    }
+    else if ($bg_gradient != 'none' && count($bg_colors) > 1) {
+      $bg_color_str = implode(', ', $bg_colors);
+      $grad_webkit = $bg_gradient == 'left-to-right' ? 'left, ' : '';
+      $grad_mozopera = $bg_gradient == 'left-to-right' ? 'right, ' : '';
+      $grad_standard = $bg_gradient == 'left-to-right' ? 'to right, ' : '';
+
+      $css .= $css_selector . ' { ';
+      $css .= 'background: -webkit-linear-gradient(' . $grad_webkit . $bg_color_str . '); ';
+      $css .= 'background: -o-linear-gradient(' . $grad_mozopera . $bg_color_str . '); ';
+      $css .= 'background: -moz-linear-gradient(' . $grad_mozopera . $bg_color_str . '); ';
+      $css .= 'background: linear-gradient(' . $grad_standard . $bg_color_str . ');';
+      $css .= ' }' . "\n";
+    }
   }
-  $css .= ' }' . "\n";
 
   // Generate foreground color
-  if ($form_state['values'][$name . '_override_fg_colors'])  {
+  if ($form_state['values'][$name . '_use_fg'])  {
     // Color
     $css .= $css_selector . ' { ';
     $color = $form_state['values'][$name . '_color'];
@@ -231,8 +291,8 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
     $css .= ' }' . "\n";
   }
 
-  // Generate foreground link colors
-  if ($form_state['values'][$name . '_override_fg_colors'])  {
+  // Generate foreground link colors & decoration
+  if ($form_state['values'][$name . '_use_fg'])  {
     // Link color & decoration
     $css .= $css_selector . ' a { ';
     $link_color = $form_state['values'][$name . '_link_color'];
@@ -242,7 +302,7 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
     $css .= 'text-decoration: ' . $link_decoration . ';';
     $css .= ' }' . "\n";
 
-    // Link hover and focus color
+    // Link hover/focus color & decoration
     $css .= $css_selector . ' a:hover, ' . $css_selector . ' a:focus { ';
     $hover_color = $form_state['values'][$name . '_hover_color'];
     $hover_color = $hover_color == '' ? 'inherit' : $hover_color;
