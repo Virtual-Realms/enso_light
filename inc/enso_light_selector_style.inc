@@ -201,7 +201,68 @@ function enso_light_selector_form($name, $css_selector) {
     ),
     '#default_value' => theme_get_setting($name . '_hover_decoration'),
   );
-
+  // Use borders checkbox
+  $form[$name . '_fieldset'][$name . '_use_borders'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use borders'),
+    '#default_value' => theme_get_setting($name . '_use_borders'),
+    '#tree' => FALSE,
+  );
+  // Border options fieldset
+  $form[$name . '_fieldset'][$name . '_border_opts'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Border options'),
+    '#states' => array(
+      // Hide borders fieldset by default
+      'invisible' => array(
+        'input[name="' . $name . '_use_borders"]' => array('checked' => FALSE),
+      ),
+    ),
+  );
+  // Border color
+  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_border_color'] = array(
+    '#type' => 'textfield',
+    '#size' => '15',
+    '#title' => t('Border color'),
+    '#default_value' => theme_get_setting($name . '_border_color'),
+  );
+  // Border width
+  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_border_width'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#title' => t('Border width'),
+    '#default_value' => theme_get_setting($name . '_border_width'),
+  );
+  // Border style
+  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_border_style'] = array(
+    '#type' => 'select',
+    '#title' => t('Border style'),
+    '#options' => array(
+      'none' => t('None'),
+      'dotted' => t('Dotted'),
+      'dashed' => t('Dashed'),
+      'solid' => t('Solid'),
+      'double' => t('Double'),
+      'groove' => t('Groove'),
+      'ridge' => t('Ridge'),
+      'inset' => t('Inset'),
+      'outset' => t('Outset'),
+    ),
+    '#default_value' => theme_get_setting($name . '_border_style'),
+  );
+  // Border apply to
+  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_border_apply_to'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Apply borders to'),
+    '#attributes' => array('class' => array('container-inline')), 
+    '#options' => array(
+      'top' => t('Top'),
+      'right' => t('Right'),
+      'bottom' => t('Bottom'),
+      'left' => t('Left'),
+    ),
+    '#default_value' => array_values(theme_get_setting($name . '_border_apply_to')),
+  );
   return $form;
 }
 
@@ -313,6 +374,26 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
     $css .= $css_selector . ' a:hover, ' . $css_selector . ' a:focus { ';
     $css .= 'color: ' . $hover_color . '; ';
     $css .= 'text-decoration: ' . $hover_decoration . ';';
+    $css .= ' }' . "\n";
+  }
+
+  // Generate borders
+  if ($form_state['values'][$name . '_use_borders'])  {
+    $border_color = $form_state['values'][$name . '_border_color'];
+    $border_width = $form_state['values'][$name . '_border_width'];
+    $border_style = $form_state['values'][$name . '_border_style'];
+    $border_top_style = $form_state['values'][$name . '_border_apply_to']['top'] ? $border_style : 'none';
+    $border_right_style = $form_state['values'][$name . '_border_apply_to']['right'] ? $border_style : 'none';
+    $border_bottom_style = $form_state['values'][$name . '_border_apply_to']['bottom'] ? $border_style : 'none';
+    $border_left_style = $form_state['values'][$name . '_border_apply_to']['left'] ? $border_style : 'none';
+
+    $css .= $css_selector . ' { ';
+    $css .= 'border-color: ' . $border_color . '; ';
+    $css .= 'border-width: ' . $border_width . '; ';
+    $css .= 'border-top-style: ' . $border_top_style . '; ';
+    $css .= 'border-right-style: ' . $border_right_style . '; ';
+    $css .= 'border-bottom-style: ' . $border_bottom_style . '; ';
+    $css .= 'border-left-style: ' . $border_left_style . ';';
     $css .= ' }' . "\n";
   }
 
