@@ -9,13 +9,14 @@
 /**
  * Build the subform for a custom CSS selector
  */
-function enso_light_selector_form($name) {
+function enso_light_selector_form($name, $css_selector) {
 
   $form = array();
 
   $form[$name . '_fieldset'] = array(
     '#type' => 'fieldset',
-    '#title' => t(ucfirst(str_replace(array('-', '_'), ' ', $name))),
+    //'#title' => t(ucfirst(str_replace(array('-', '_'), ' ', $name))),
+    '#title' => t('Styling for selector "' . $css_selector . '"'),
     '#collapsible' => TRUE, 
     '#collapsed' => TRUE, 
   );

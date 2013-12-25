@@ -39,7 +39,7 @@ function enso_light_form_system_theme_settings_alter(&$form, &$form_state)  {
   foreach ($css_selectors as $css_selector) {
     $css_selector_prefixes = array('.', '#');
     $name = str_replace($css_selector_prefixes, '', $css_selector);
-    $form['enso'][$name] = enso_light_selector_form($name);
+    $form['enso'][$name] = enso_light_selector_form($name, $css_selector);
   }
 
   // Attach custom submit handler to the form
