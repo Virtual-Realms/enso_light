@@ -236,7 +236,7 @@ function enso_light_selector_bg_save(&$form, &$form_state, $name) {
 function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
 
   $css = '';
-  
+
   // Generate background image
   if ($form_state['values'][$name . '_use_bg_image'])  {
 
@@ -245,14 +245,11 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
     $bg_attachment = $form_state['values'][$name . '_bg_attachment'];
     $bg_repeat = $form_state['values'][$name . '_bg_repeat'];
 
-    //$css .= 'background: ' . $bg_url . $bg_position . $bg_attachment . $bg_repeat . $bg_color . ';';
-
     $css .= $css_selector . ' { ';
     $css .= 'background-image: ' . $bg_url . '; ';
     $css .= 'background-position: ' . $bg_position . '; ';
     $css .= 'background-attachment: ' . $bg_attachment . '; ';
     $css .= 'background-repeat: ' . $bg_repeat . '; ';
-    //$css .= 'background-color: ' . $bg_color . ';';
     $css .= ' }' . "\n";
   }
 
@@ -260,11 +257,13 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
   if ($form_state['values'][$name . '_use_bg_colors'])  {
     $bg_colors = explode('|', $form_state['values'][$name . '_bg_color']);
     $bg_gradient = $form_state['values'][$name . '_bg_gradient'];
-    //$bg_color = $bg_color == '' ? 'transparent' : $bg_color;
-    //$css .= 'background-color: ' . $bg_color . ';';
+    $bg_url = $form_state['values'][$name . '_use_bg_image'] ? $bg_url . ',' : '';
+
     if ($bg_gradient == 'none' && count($bg_colors) >= 1) {
       $css .= $css_selector . ' { ';
-      $css .= 'background-color: ' . $bg_colors[0] . ';';
+      $css .= 'background-color: ' . $bg_colors[0] . ';'; // fallback
+      $css .= 'background-image: ' . $bg_url . $bg_colors[0] . ';';
+      $css .= 'background-image: ' . $bg_url . $bg_colors[0] . ';';
       $css .= ' }' . "\n";
     }
     else if ($bg_gradient != 'none' && count($bg_colors) > 1) {
@@ -274,10 +273,10 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
       $grad_standard = $bg_gradient == 'left-to-right' ? 'to right, ' : '';
 
       $css .= $css_selector . ' { ';
-      $css .= 'background: -webkit-linear-gradient(' . $grad_webkit . $bg_color_str . '); ';
-      $css .= 'background: -o-linear-gradient(' . $grad_mozopera . $bg_color_str . '); ';
-      $css .= 'background: -moz-linear-gradient(' . $grad_mozopera . $bg_color_str . '); ';
-      $css .= 'background: linear-gradient(' . $grad_standard . $bg_color_str . ');';
+      $css .= 'background-image: ' . $bg_url . ' -webkit-linear-gradient(' . $grad_webkit . $bg_color_str . '); ';
+      $css .= 'background-image: ' . $bg_url . ' -o-linear-gradient(' . $grad_mozopera . $bg_color_str . '); ';
+      $css .= 'background-image: ' . $bg_url . ' -moz-linear-gradient(' . $grad_mozopera . $bg_color_str . '); ';
+      $css .= 'background-image: ' . $bg_url . ' linear-gradient(' . $grad_standard . $bg_color_str . ');';
       $css .= ' }' . "\n";
     }
   }
@@ -285,9 +284,10 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
   // Generate foreground color
   if ($form_state['values'][$name . '_use_fg'])  {
     // Color
-    $css .= $css_selector . ' { ';
     $color = $form_state['values'][$name . '_color'];
     $color = $color == '' ? 'inherit' : $color;
+
+    $css .= $css_selector . ' { ';
     $css .= 'color: ' . $color . ';';
     $css .= ' }' . "\n";
   }
@@ -295,20 +295,22 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
   // Generate foreground link colors & decoration
   if ($form_state['values'][$name . '_use_fg'])  {
     // Link color & decoration
-    $css .= $css_selector . ' a { ';
     $link_color = $form_state['values'][$name . '_link_color'];
     $link_color = $link_color == '' ? 'inherit' : $link_color;
-    $css .= 'color: ' . $link_color . '; ';
     $link_decoration = $form_state['values'][$name . '_link_decoration'];
+
+    $css .= $css_selector . ' a { ';
+    $css .= 'color: ' . $link_color . '; ';
     $css .= 'text-decoration: ' . $link_decoration . ';';
     $css .= ' }' . "\n";
 
     // Link hover/focus color & decoration
-    $css .= $css_selector . ' a:hover, ' . $css_selector . ' a:focus { ';
     $hover_color = $form_state['values'][$name . '_hover_color'];
     $hover_color = $hover_color == '' ? 'inherit' : $hover_color;
-    $css .= 'color: ' . $hover_color . '; ';
     $hover_decoration = $form_state['values'][$name . '_hover_decoration'];
+
+    $css .= $css_selector . ' a:hover, ' . $css_selector . ' a:focus { ';
+    $css .= 'color: ' . $hover_color . '; ';
     $css .= 'text-decoration: ' . $hover_decoration . ';';
     $css .= ' }' . "\n";
   }
