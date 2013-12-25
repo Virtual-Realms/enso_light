@@ -269,13 +269,14 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
     else if ($bg_gradient != 'none' && count($bg_colors) > 1) {
       $bg_color_str = implode(', ', $bg_colors);
       $grad_webkit = $bg_gradient == 'left-to-right' ? 'left, ' : '';
-      $grad_mozopera = $bg_gradient == 'left-to-right' ? 'right, ' : '';
+      $grad_moz_o_ms = $bg_gradient == 'left-to-right' ? 'right, ' : '';
       $grad_standard = $bg_gradient == 'left-to-right' ? 'to right, ' : '';
 
       $css .= $css_selector . ' { ';
       $css .= 'background-image: ' . $bg_url . ' -webkit-linear-gradient(' . $grad_webkit . $bg_color_str . '); ';
-      $css .= 'background-image: ' . $bg_url . ' -o-linear-gradient(' . $grad_mozopera . $bg_color_str . '); ';
-      $css .= 'background-image: ' . $bg_url . ' -moz-linear-gradient(' . $grad_mozopera . $bg_color_str . '); ';
+      $css .= 'background-image: ' . $bg_url . ' -o-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . '); ';
+      $css .= 'background-image: ' . $bg_url . ' -ms-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . '); ';
+      $css .= 'background-image: ' . $bg_url . ' -moz-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . '); ';
       $css .= 'background-image: ' . $bg_url . ' linear-gradient(' . $grad_standard . $bg_color_str . ');';
       $css .= ' }' . "\n";
     }
