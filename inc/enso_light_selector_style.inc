@@ -301,6 +301,45 @@ function enso_light_selector_form($name, $css_selector) {
     ),
     '#default_value' => array_values(theme_get_setting($name . '_radius_apply_to')),
   );
+  // Use box shadow checkbox
+  $form[$name . '_fieldset'][$name . '_use_box_shadow'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use box shadow'),
+    '#default_value' => theme_get_setting($name . '_use_box_shadow'),
+    '#tree' => FALSE,
+  );
+  // Box shadow options fieldset
+  $form[$name . '_fieldset'][$name . '_box_shadow_opts'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Box shadow options'),
+    '#states' => array(
+      // Hide box shadow fieldset by default
+      'invisible' => array(
+        'input[name="' . $name . '_use_box_shadow"]' => array('checked' => FALSE),
+      ),
+    ),
+  );
+  // Box shadow distance
+  $form[$name . '_fieldset'][$name . '_box_shadow_opts'][$name . '_box_shadow_distance'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#title' => t('Distance'),
+    '#default_value' => theme_get_setting($name . '_box_shadow_distance'),
+  );
+  // Box shadow blur
+  $form[$name . '_fieldset'][$name . '_box_shadow_opts'][$name . '_box_shadow_blur'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#title' => t('Blur'),
+    '#default_value' => theme_get_setting($name . '_box_shadow_blur'),
+  );
+  // Box shadow color
+  $form[$name . '_fieldset'][$name . '_box_shadow_opts'][$name . '_box_shadow_color'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#title' => t('Color'),
+    '#default_value' => theme_get_setting($name . '_box_shadow_color'),
+  );
 
   return $form;
 }
@@ -448,7 +487,7 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
       $radius_bottom_left = $form_state['values'][$name . '_radius_apply_to']['bottom-left'];
 
       $css .= $css_selector . ' { ';
-      $prefixes = array('webkit-', 'moz-', '');
+      $prefixes = array('-webkit-', '-moz-', '');
       foreach ($prefixes as $prefix) {
         $separator = ($prefix == 'moz-') ? '' : '-';
         if ($radius_top_left) {
@@ -466,6 +505,20 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
       }
       $css .= ' }' . "\n";
     }
+  }
+
+  // Generate box shadows
+  if ($form_state['values'][$name . '_use_box_shadow'])  {
+      $distance = $form_state['values'][$name . '_box_shadow_distance'];
+      $blur = $form_state['values'][$name . '_box_shadow_blur'];
+      $color = $form_state['values'][$name . '_box_shadow_color'];
+
+      $css .= $css_selector . ' { ';
+      $prefixes = array('-webkit-', '-moz-', '');
+      foreach ($prefixes as $prefix) {
+        $css .= $prefix . 'box-shadow: ' . $distance . ' ' . $distance . ' ' . $blur . ' ' . $color . '; ';
+      }
+      $css .= '}' . "\n";
   }
 
   return $css;
