@@ -263,6 +263,45 @@ function enso_light_selector_form($name, $css_selector) {
     ),
     '#default_value' => array_values(theme_get_setting($name . '_border_apply_to')),
   );
+  // Use rounded corners checkbox
+  $form[$name . '_fieldset'][$name . '_use_radius'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use rounded corners'),
+    '#default_value' => theme_get_setting($name . '_use_radius'),
+    '#tree' => FALSE,
+  );
+  // Rounded corner options fieldset
+  $form[$name . '_fieldset'][$name . '_radius_opts'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Rounded corner options'),
+    '#states' => array(
+      // Hide radius fieldset by default
+      'invisible' => array(
+        'input[name="' . $name . '_use_radius"]' => array('checked' => FALSE),
+      ),
+    ),
+  );
+  // Rounded corner radius
+  $form[$name . '_fieldset'][$name . '_radius_opts'][$name . '_radius'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#title' => t('Rounded corner radius'),
+    '#default_value' => theme_get_setting($name . '_radius'),
+  );
+  // Rounded corners apply to
+  $form[$name . '_fieldset'][$name . '_radius_opts'][$name . '_radius_apply_to'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Apply rounded corners to'),
+    '#attributes' => array('class' => array('container-inline')), 
+    '#options' => array(
+      'top-left' => t('Top left'),
+      'top-right' => t('Top right'),
+      'bottom-right' => t('Bottom right'),
+      'bottom-left' => t('Bottom left'),
+    ),
+    '#default_value' => array_values(theme_get_setting($name . '_radius_apply_to')),
+  );
+
   return $form;
 }
 
@@ -379,22 +418,54 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
 
   // Generate borders
   if ($form_state['values'][$name . '_use_borders'])  {
-    $border_color = $form_state['values'][$name . '_border_color'];
     $border_width = $form_state['values'][$name . '_border_width'];
-    $border_style = $form_state['values'][$name . '_border_style'];
-    $border_top_style = $form_state['values'][$name . '_border_apply_to']['top'] ? $border_style : 'none';
-    $border_right_style = $form_state['values'][$name . '_border_apply_to']['right'] ? $border_style : 'none';
-    $border_bottom_style = $form_state['values'][$name . '_border_apply_to']['bottom'] ? $border_style : 'none';
-    $border_left_style = $form_state['values'][$name . '_border_apply_to']['left'] ? $border_style : 'none';
+    if ($border_width) {
+      $border_color = $form_state['values'][$name . '_border_color'];
+      $border_style = $form_state['values'][$name . '_border_style'];
+      $border_top_style = $form_state['values'][$name . '_border_apply_to']['top'] ? $border_style : 'none';
+      $border_right_style = $form_state['values'][$name . '_border_apply_to']['right'] ? $border_style : 'none';
+      $border_bottom_style = $form_state['values'][$name . '_border_apply_to']['bottom'] ? $border_style : 'none';
+      $border_left_style = $form_state['values'][$name . '_border_apply_to']['left'] ? $border_style : 'none';
 
-    $css .= $css_selector . ' { ';
-    $css .= 'border-color: ' . $border_color . '; ';
-    $css .= 'border-width: ' . $border_width . '; ';
-    $css .= 'border-top-style: ' . $border_top_style . '; ';
-    $css .= 'border-right-style: ' . $border_right_style . '; ';
-    $css .= 'border-bottom-style: ' . $border_bottom_style . '; ';
-    $css .= 'border-left-style: ' . $border_left_style . ';';
-    $css .= ' }' . "\n";
+      $css .= $css_selector . ' { ';
+      $css .= 'border-color: ' . $border_color . '; ';
+      $css .= 'border-width: ' . $border_width . '; ';
+      $css .= 'border-top-style: ' . $border_top_style . '; ';
+      $css .= 'border-right-style: ' . $border_right_style . '; ';
+      $css .= 'border-bottom-style: ' . $border_bottom_style . '; ';
+      $css .= 'border-left-style: ' . $border_left_style . ';';
+      $css .= ' }' . "\n";
+    }
+  }
+
+  // Generate rounded corners
+  if ($form_state['values'][$name . '_use_radius'])  {
+    $radius = $form_state['values'][$name . '_radius'];
+    if ($radius) {
+      $radius_top_left = $form_state['values'][$name . '_radius_apply_to']['top-left'];
+      $radius_top_right = $form_state['values'][$name . '_radius_apply_to']['top-right'];
+      $radius_bottom_right = $form_state['values'][$name . '_radius_apply_to']['bottom-right'];
+      $radius_bottom_left = $form_state['values'][$name . '_radius_apply_to']['bottom-left'];
+
+      $css .= $css_selector . ' { ';
+      $prefixes = array('webkit-', 'moz-', '');
+      foreach ($prefixes as $prefix) {
+        $separator = ($prefix == 'moz-') ? '' : '-';
+        if ($radius_top_left) {
+          $css .= $prefix . 'border-top' . $separator . 'left-radius: ' . $radius . '; ';
+        }
+        if ($radius_top_right) {
+          $css .= $prefix . 'border-top' . $separator . 'right-radius: ' . $radius . '; ';
+        }
+        if ($radius_bottom_right) {
+          $css .= $prefix . 'border-bottom' . $separator . 'right-radius: ' . $radius . '; ';
+        }
+        if ($radius_bottom_left) {
+          $css .= $prefix . 'border-bottom' . $separator . 'left-radius: ' . $radius . '; ';
+        }
+      }
+      $css .= ' }' . "\n";
+    }
   }
 
   return $css;
