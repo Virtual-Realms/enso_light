@@ -33,11 +33,13 @@ function enso_light_form_system_theme_settings_alter(&$form, &$form_state)  {
   );
 
   // Dynamically generate sets of form elements based on user-defined CSS selectors
-  $css_selectors = explode("\n", theme_get_setting('css_selectors'));
-  foreach ($css_selectors as $css_selector) {
-    $css_selector = trim($css_selector);
-    $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector));
-    $form['enso'][$name] = enso_light_selector_form($name, $css_selector);
+  $css_selector_lines = explode("\n", theme_get_setting('css_selectors'));
+  foreach ($css_selector_lines as $css_selector_line) {
+    $css_selector_pair = explode('|', $css_selector_line);
+    $css_selector = trim($css_selector_pair[0]);
+    $css_selector_name = trim($css_selector_pair[1]);
+    $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector_name));
+    $form['enso'][$name] = enso_light_selector_form($css_selector, $css_selector_name);
   }
 
   // Attach custom submit handler to the form
@@ -49,12 +51,13 @@ function enso_light_settings_submit(&$form, &$form_state)  {
 
   // Save background images and generate CSS
   $css = '';
-  $css_selectors = explode("\n", theme_get_setting('css_selectors'));
-  foreach ($css_selectors as $css_selector) {
-    $css_selector = trim($css_selector);
-    $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector));
-    enso_light_selector_bg_save($form, $form_state, $name);
-    $css .= enso_light_selector_generate_css($form_state, $name, $css_selector);
+  $css_selector_lines = explode("\n", theme_get_setting('css_selectors'));
+  foreach ($css_selector_lines as $css_selector_line) {
+    $css_selector_pair = explode("|", $css_selector_line);
+    $css_selector = trim($css_selector_pair[0]);
+    $css_selector_name = trim($css_selector_pair[1]);
+    enso_light_selector_bg_save($form, $form_state, $css_selector_name);
+    $css .= enso_light_selector_generate_css($form_state, $css_selector, $css_selector_name);
   }
 
   // Save custom CSS to file

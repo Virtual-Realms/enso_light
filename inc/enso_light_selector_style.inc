@@ -9,16 +9,19 @@
 /**
  * Build the subform for a custom CSS selector
  */
-function enso_light_selector_form($name, $css_selector) {
+function enso_light_selector_form($css_selector, $css_selector_name) {
+
+  $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector_name));
 
   $form = array();
 
   $form[$name . '_fieldset'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Styling for selector "' . $css_selector . '"'),
+    '#title' => t('Styling for "' . $css_selector_name . '"'),
     '#collapsible' => TRUE, 
     '#collapsed' => TRUE, 
   );
+
   // Use layout checkbox
   $form[$name . '_fieldset'][$name . '_use_layout'] = array(
     '#type' => 'checkbox',
@@ -200,53 +203,25 @@ function enso_light_selector_form($name, $css_selector) {
       ),
     ),
   );
-  // Color
-  $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_color'] = array(
+  // Text color
+  $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_text_color'] = array(
     '#type' => 'textfield',
     '#size' => '15',
-    '#title' => t('Color'),
-    '#default_value' => theme_get_setting($name . '_color'),
+    '#title' => t('Text color'),
+    '#default_value' => theme_get_setting($name . '_text_color'),
   );
-  // Link and visited color
-  $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_link_color'] = array(
-    '#type' => 'textfield',
-    '#size' => '15',
-    '#title' => t('Link and visited color'),
-    '#default_value' => theme_get_setting($name . '_link_color'),
-  );
-  // Link and visited decoration
-  $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_link_decoration'] = array(
+  // Text decoration
+  $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_text_decoration'] = array(
     '#type' => 'select',
-    '#title' => t('Link and visited decoration'),
+    '#title' => t('Text decoration'),
     '#options' => array(
+      'inherit' => t('Inherit'),
       'none' => t('None'),
       'underline' => t('Underline'),
       'overline' => t('Overline'),
       'line-through' => t('Line-through'),
-      'inherit' => t('Inherit'),
     ),
-    '#default_value' => theme_get_setting($name . '_link_decoration'),
-  );
-  // Link hover, focus and active color
-  $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_hover_color'] = array(
-    '#type' => 'textfield',
-    '#size' => '15',
-    '#title' => t('Link hover, focus and active color'),
-    '#default_value' => theme_get_setting($name . '_hover_color'),
-    //'#description' => t('Enter a valid CSS color value <em>e.g. red can be defined as #f00, #ff0000, rgb(255,0,0), rgba(255,0,0,0.0) or simply red. Write transparent for no color.</em>'),
-  );
-  // Link hover, focus and active decoration
-  $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_hover_decoration'] = array(
-    '#type' => 'select',
-    '#title' => t('Link hover, focus and active decoration'),
-    '#options' => array(
-      'none' => t('None'),
-      'underline' => t('Underline'),
-      'overline' => t('Overline'),
-      'line-through' => t('Line-through'),
-      'inherit' => t('Inherit'),
-    ),
-    '#default_value' => theme_get_setting($name . '_hover_decoration'),
+    '#default_value' => theme_get_setting($name . '_text_decoration'),
   );
   // Use borders checkbox
   $form[$name . '_fieldset'][$name . '_use_borders'] = array(
@@ -467,7 +442,10 @@ function enso_light_selector_form($name, $css_selector) {
 /**
  * Save the background image for a custom CSS selector
  */
-function enso_light_selector_bg_save(&$form, &$form_state, $name) {
+function enso_light_selector_bg_save(&$form, &$form_state, $css_selector_name) {
+
+  $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector_name));
+
   // Get the previous value
   $previous = 'public://' . $form['enso'][$name][$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_path']['#default_value'];
   $file = file_save_upload($name . '_bg_upload');
@@ -492,7 +470,9 @@ function enso_light_selector_bg_save(&$form, &$form_state, $name) {
 /**
  * Generate the CSS for a custom CSS selector
  */
-function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
+function enso_light_selector_generate_css(&$form_state, $css_selector, $css_selector_name) {
+
+  $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector_name));
 
   $css = '';
 
@@ -563,11 +543,11 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
 
     // Generate foreground color
     if ($use_fg)  {
-      // Color
-      $color = $form_state['values'][$name . '_color'];
-      $color = $color == '' ? 'inherit' : $color;
+      $color = $form_state['values'][$name . '_text_color'];
+      $decoration = $form_state['values'][$name . '_text_decoration'];
 
       $css .= 'color: ' . $color . '; ';
+      $css .= 'text-decoration: ' . $decoration . '; ';
     }
 
     // Generate borders
@@ -632,29 +612,6 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
     }
 
     $css .= '}' . "\n";
-
-    // Pseudo elements (link states etc)
-    if ($use_fg)  {
-      // Link color & decoration
-      $link_color = $form_state['values'][$name . '_link_color'];
-      $link_color = $link_color == '' ? 'inherit' : $link_color;
-      $link_decoration = $form_state['values'][$name . '_link_decoration'];
-
-      $css .= $css_selector . ':link, ' . $css_selector . ':visited { ';
-      $css .= $link_color ? 'color: ' . $link_color . '; ' : '';
-      $css .= $link_decoration ? 'text-decoration: ' . $link_decoration . '; ' : '';
-      $css .= '}' . "\n";
-
-      // Link hover/focus/active color & decoration
-      $hover_color = $form_state['values'][$name . '_hover_color'];
-      $hover_color = $hover_color == '' ? 'inherit' : $hover_color;
-      $hover_decoration = $form_state['values'][$name . '_hover_decoration'];
-
-      $css .= $css_selector . ':hover, ' . $css_selector . ':focus, ' . $css_selector . ':active { ';
-      $css .= $hover_color ? 'color: ' . $hover_color . '; ' : '';
-      $css .= $hover_decoration ? 'text-decoration: ' . $hover_decoration . '; ' : '';
-      $css .= '}' . "\n";
-    }
   }
 
   return $css;
