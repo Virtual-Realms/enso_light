@@ -370,9 +370,48 @@ function enso_light_selector_form($name, $css_selector) {
   // Box shadow color
   $form[$name . '_fieldset'][$name . '_box_shadow_opts'][$name . '_box_shadow_color'] = array(
     '#type' => 'textfield',
-    '#size' => '5',
+    '#size' => '15',
     '#title' => t('Color'),
     '#default_value' => theme_get_setting($name . '_box_shadow_color'),
+  );
+  // Use text shadow checkbox
+  $form[$name . '_fieldset'][$name . '_use_text_shadow'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use text shadow'),
+    '#default_value' => theme_get_setting($name . '_use_text_shadow'),
+    '#tree' => FALSE,
+  );
+  // Text shadow options fieldset
+  $form[$name . '_fieldset'][$name . '_text_shadow_opts'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Text shadow options'),
+    '#states' => array(
+      // Hide text shadow fieldset by default
+      'invisible' => array(
+        'input[name="' . $name . '_use_text_shadow"]' => array('checked' => FALSE),
+      ),
+    ),
+  );
+  // Text shadow distance
+  $form[$name . '_fieldset'][$name . '_text_shadow_opts'][$name . '_text_shadow_distance'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#title' => t('Distance'),
+    '#default_value' => theme_get_setting($name . '_text_shadow_distance'),
+  );
+  // Text shadow blur
+  $form[$name . '_fieldset'][$name . '_text_shadow_opts'][$name . '_text_shadow_blur'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#title' => t('Blur'),
+    '#default_value' => theme_get_setting($name . '_text_shadow_blur'),
+  );
+  // Text shadow color
+  $form[$name . '_fieldset'][$name . '_text_shadow_opts'][$name . '_text_shadow_color'] = array(
+    '#type' => 'textfield',
+    '#size' => '15',
+    '#title' => t('Color'),
+    '#default_value' => theme_get_setting($name . '_text_shadow_color'),
   );
 
   return $form;
@@ -544,6 +583,17 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
       foreach ($prefixes as $prefix) {
         $css .= $prefix . 'box-shadow: ' . $distance . ' ' . $distance . ' ' . $blur . ' ' . $color . '; ';
       }
+      $css .= '}' . "\n";
+  }
+
+  // Generate text shadows
+  if ($form_state['values'][$name . '_use_text_shadow'])  {
+      $distance = $form_state['values'][$name . '_text_shadow_distance'];
+      $blur = $form_state['values'][$name . '_text_shadow_blur'];
+      $color = $form_state['values'][$name . '_text_shadow_color'];
+
+      $css .= $css_selector . ' { ';
+      $css .= 'text-shadow: ' . $distance . ' ' . $distance . ' ' . $blur . ' ' . $color . '; ';
       $css .= '}' . "\n";
   }
 
