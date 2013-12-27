@@ -25,6 +25,7 @@ function enso_light_form_system_theme_settings_alter(&$form, &$form_state)  {
   $form['enso']['css_selectors'] = array(
     '#type' => 'textfield',
     '#size' => '120',
+    '#maxlength' => '1024',
     '#title' => t('CSS Selectors'),
     '#default_value' => theme_get_setting('css_selectors'),
     '#description' => t('Enter a list of CSS selectors, separated by commas <em>e.g. #header, .footer etc</em>. For each selector specified here, further styling options will be displayed below after saving.'),
