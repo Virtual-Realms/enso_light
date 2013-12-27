@@ -205,17 +205,17 @@ function enso_light_selector_form($name, $css_selector) {
     '#title' => t('Color'),
     '#default_value' => theme_get_setting($name . '_color'),
   );
-  // Link color
+  // Link and visited color
   $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_link_color'] = array(
     '#type' => 'textfield',
     '#size' => '15',
-    '#title' => t('Link color'),
+    '#title' => t('Link and visited color'),
     '#default_value' => theme_get_setting($name . '_link_color'),
   );
-  // Link decoration
+  // Link and visited decoration
   $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_link_decoration'] = array(
     '#type' => 'select',
-    '#title' => t('Link decoration'),
+    '#title' => t('Link and visited decoration'),
     '#options' => array(
       'none' => t('None'),
       'underline' => t('Underline'),
@@ -225,18 +225,18 @@ function enso_light_selector_form($name, $css_selector) {
     ),
     '#default_value' => theme_get_setting($name . '_link_decoration'),
   );
-  // Link hover and focus color
+  // Link hover, focus and active color
   $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_hover_color'] = array(
     '#type' => 'textfield',
     '#size' => '15',
-    '#title' => t('Link hover and focus color'),
+    '#title' => t('Link hover, focus and active color'),
     '#default_value' => theme_get_setting($name . '_hover_color'),
     //'#description' => t('Enter a valid CSS color value <em>e.g. red can be defined as #f00, #ff0000, rgb(255,0,0), rgba(255,0,0,0.0) or simply red. Write transparent for no color.</em>'),
   );
-  // Link hover and focus decoration
+  // Link hover, focus and active decoration
   $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_hover_decoration'] = array(
     '#type' => 'select',
-    '#title' => t('Link hover and focus decoration'),
+    '#title' => t('Link hover, focus and active decoration'),
     '#options' => array(
       'none' => t('None'),
       'underline' => t('Underline'),
@@ -492,153 +492,167 @@ function enso_light_selector_bg_save(&$form, &$form_state, $name) {
  */
 function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
 
-  $css = $css_selector . ' { ';
+  $css = '';
 
-  // Generate layout
-  if ($form_state['values'][$name . '_use_layout'])  {
-    $layout_width = $form_state['values'][$name . '_layout_width'];
-    $layout_height = $form_state['values'][$name . '_layout_height'];
-    $layout_margins = $form_state['values'][$name . '_layout_margins'];
-    $layout_padding = $form_state['values'][$name . '_layout_padding'];
+  $use_layout = $form_state['values'][$name . '_use_layout'];
+  $use_bg_image = $form_state['values'][$name . '_use_bg_image'];
+  $use_bg_colors = $form_state['values'][$name . '_use_bg_colors'];
+  $use_fg = $form_state['values'][$name . '_use_fg'];
+  $use_borders = $form_state['values'][$name . '_use_borders'];
+  $use_radius = $form_state['values'][$name . '_use_radius'];
+  $use_box_shadow = $form_state['values'][$name . '_use_box_shadow'];
+  $use_text_shadow = $form_state['values'][$name . '_use_text_shadow'];
 
-    $css .= $layout_width ? 'width: ' . $layout_width . '; ' : '';
-    $css .= $layout_height ? 'height: ' . $layout_height . '; ' : '';
-    $css .= $layout_margins ? 'margin: ' . $layout_margins . '; ' : '';
-    $css .= $layout_padding ? 'padding: ' . $layout_padding . '; ' : '';
-  }
+  if ($use_layout || $use_bg_image || $use_bg_colors || $use_fg || $use_borders || $use_radius || $use_box_shadow || $use_text_shadow) {
 
-  // Generate background image
-  if ($form_state['values'][$name . '_use_bg_image'])  {
+    $css .= $css_selector . ' { ';
 
-    $bg_url = 'url(\'' . file_create_url($form_state['values'][$name . '_bg_path']) . '\')';
-    $bg_position = $form_state['values'][$name . '_bg_position'];
-    $bg_attachment = $form_state['values'][$name . '_bg_attachment'];
-    $bg_repeat = $form_state['values'][$name . '_bg_repeat'];
+    // Generate layout
+    if ($use_layout)  {
+      $layout_width = $form_state['values'][$name . '_layout_width'];
+      $layout_height = $form_state['values'][$name . '_layout_height'];
+      $layout_margins = $form_state['values'][$name . '_layout_margins'];
+      $layout_padding = $form_state['values'][$name . '_layout_padding'];
 
-    $css .= 'background-image: ' . $bg_url . '; ';
-    $css .= 'background-position: ' . $bg_position . '; ';
-    $css .= 'background-attachment: ' . $bg_attachment . '; ';
-    $css .= 'background-repeat: ' . $bg_repeat . '; ';
-  }
-
-  // Generate background color
-  if ($form_state['values'][$name . '_use_bg_colors'])  {
-    $bg_colors = explode('|', $form_state['values'][$name . '_bg_color']);
-    $bg_gradient = $form_state['values'][$name . '_bg_gradient'];
-    $bg_url = $form_state['values'][$name . '_use_bg_image'] ? $bg_url . ',' : '';
-
-    if ($bg_gradient == 'none' && count($bg_colors) >= 1) {
-      $css .= 'background-color: ' . $bg_colors[0] . '; '; // fallback
-      $css .= 'background-image: ' . $bg_url . $bg_colors[0] . '; ';
-      $css .= 'background-image: ' . $bg_url . $bg_colors[0] . '; ';
+      $css .= $layout_width ? 'width: ' . $layout_width . '; ' : '';
+      $css .= $layout_height ? 'height: ' . $layout_height . '; ' : '';
+      $css .= $layout_margins ? 'margin: ' . $layout_margins . '; ' : '';
+      $css .= $layout_padding ? 'padding: ' . $layout_padding . '; ' : '';
     }
-    else if ($bg_gradient != 'none' && count($bg_colors) > 1) {
-      $bg_color_str = implode(', ', $bg_colors);
-      $grad_webkit = $bg_gradient == 'left-to-right' ? 'left, ' : '';
-      $grad_moz_o_ms = $bg_gradient == 'left-to-right' ? 'right, ' : '';
-      $grad_standard = $bg_gradient == 'left-to-right' ? 'to right, ' : '';
 
-      $css .= 'background-image: ' . $bg_url . ' -webkit-linear-gradient(' . $grad_webkit . $bg_color_str . '); ';
-      $css .= 'background-image: ' . $bg_url . ' -o-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . '); ';
-      $css .= 'background-image: ' . $bg_url . ' -ms-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . '); ';
-      $css .= 'background-image: ' . $bg_url . ' -moz-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . '); ';
-      $css .= 'background-image: ' . $bg_url . ' linear-gradient(' . $grad_standard . $bg_color_str . '); ';
+    // Generate background image
+    if ($use_bg_image)  {
+
+      $bg_url = 'url(\'' . file_create_url($form_state['values'][$name . '_bg_path']) . '\')';
+      $bg_position = $form_state['values'][$name . '_bg_position'];
+      $bg_attachment = $form_state['values'][$name . '_bg_attachment'];
+      $bg_repeat = $form_state['values'][$name . '_bg_repeat'];
+
+      $css .= 'background-image: ' . $bg_url . '; ';
+      $css .= 'background-position: ' . $bg_position . '; ';
+      $css .= 'background-attachment: ' . $bg_attachment . '; ';
+      $css .= 'background-repeat: ' . $bg_repeat . '; ';
     }
-  }
 
-  // Generate foreground color
-  if ($form_state['values'][$name . '_use_fg'])  {
-    // Color
-    $color = $form_state['values'][$name . '_color'];
-    $color = $color == '' ? 'inherit' : $color;
+    // Generate background colors
+    if ($use_bg_colors)  {
+      $bg_colors = explode('|', $form_state['values'][$name . '_bg_color']);
+      $bg_gradient = $form_state['values'][$name . '_bg_gradient'];
+      $bg_url = $form_state['values'][$name . '_use_bg_image'] ? $bg_url . ',' : '';
 
-    $css .= 'color: ' . $color . '; ';
-  }
+      if ($bg_gradient == 'none' && count($bg_colors) >= 1) {
+        $css .= 'background-color: ' . $bg_colors[0] . '; '; // fallback
+        $css .= 'background-image: ' . $bg_url . $bg_colors[0] . '; ';
+        $css .= 'background-image: ' . $bg_url . $bg_colors[0] . '; ';
+      }
+      else if ($bg_gradient != 'none' && count($bg_colors) > 1) {
+        $bg_color_str = implode(', ', $bg_colors);
+        $grad_webkit = $bg_gradient == 'left-to-right' ? 'left, ' : '';
+        $grad_moz_o_ms = $bg_gradient == 'left-to-right' ? 'right, ' : '';
+        $grad_standard = $bg_gradient == 'left-to-right' ? 'to right, ' : '';
 
-  // Generate borders
-  if ($form_state['values'][$name . '_use_borders'])  {
-    $border_width = $form_state['values'][$name . '_border_width'];
-    if ($border_width) {
-      $border_color = $form_state['values'][$name . '_border_color'];
-      $border_style = $form_state['values'][$name . '_border_style'];
-      $border_top = $form_state['values'][$name . '_border_top'];
-      $border_right = $form_state['values'][$name . '_border_right'];
-      $border_bottom = $form_state['values'][$name . '_border_bottom'];
-      $border_left = $form_state['values'][$name . '_border_left'];
-
-      $css .= 'border-color: ' . $border_color . '; ';
-      $css .= 'border-width: ' . $border_width . '; ';
-      $css .= $border_top ? 'border-top-style: ' . $border_style . '; ' : '';
-      $css .= $border_right ? 'border-right-style: ' . $border_style . '; ' : '';
-      $css .= $border_bottom ? 'border-bottom-style: ' . $border_style . '; ' : '';
-      $css .= $border_left ? 'border-left-style: ' . $border_style . '; ' : '';
-    }
-  }
-
-  // Generate rounded corners
-  if ($form_state['values'][$name . '_use_radius'])  {
-    $radius = $form_state['values'][$name . '_radius'];
-    if ($radius) {
-      $top_left_radius = $form_state['values'][$name . '_top_left_radius'];
-      $top_right_radius = $form_state['values'][$name . '_top_right_radius'];
-      $bottom_right_radius = $form_state['values'][$name . '_bottom_right_radius'];
-      $bottom_left_radius = $form_state['values'][$name . '_bottom_left_radius'];
-
-      $prefixes = array('-webkit-', '-moz-', '');
-      foreach ($prefixes as $prefix) {
-        $separator = ($prefix == '-moz-') ? '' : '-';
-        $css .= $top_left_radius ? $prefix . 'border-top' . $separator . 'left-radius: ' . $radius . '; ' : '';
-        $css .= $top_right_radius ? $prefix . 'border-top' . $separator . 'right-radius: ' . $radius . '; ' : '';
-        $css .= $bottom_right_radius ? $prefix . 'border-bottom' . $separator . 'right-radius: ' . $radius . '; ' : '';
-        $css .= $bottom_left_radius ? $prefix . 'border-bottom' . $separator . 'left-radius: ' . $radius . '; ' : '';
+        $css .= 'background-image: ' . $bg_url . ' -webkit-linear-gradient(' . $grad_webkit . $bg_color_str . '); ';
+        $css .= 'background-image: ' . $bg_url . ' -o-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . '); ';
+        $css .= 'background-image: ' . $bg_url . ' -ms-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . '); ';
+        $css .= 'background-image: ' . $bg_url . ' -moz-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . '); ';
+        $css .= 'background-image: ' . $bg_url . ' linear-gradient(' . $grad_standard . $bg_color_str . '); ';
       }
     }
-  }
 
-  // Generate box shadows
-  if ($form_state['values'][$name . '_use_box_shadow'])  {
-      $distance = $form_state['values'][$name . '_box_shadow_distance'];
-      $blur = $form_state['values'][$name . '_box_shadow_blur'];
-      $color = $form_state['values'][$name . '_box_shadow_color'];
+    // Generate foreground color
+    if ($use_fg)  {
+      // Color
+      $color = $form_state['values'][$name . '_color'];
+      $color = $color == '' ? 'inherit' : $color;
 
-      $prefixes = array('-webkit-', '-moz-', '');
-      foreach ($prefixes as $prefix) {
-        $css .= $prefix . 'box-shadow: ' . $distance . ' ' . $distance . ' ' . $blur . ' ' . $color . '; ';
+      $css .= 'color: ' . $color . '; ';
+    }
+
+    // Generate borders
+    if ($use_borders)  {
+      $border_width = $form_state['values'][$name . '_border_width'];
+      if ($border_width) {
+        $border_color = $form_state['values'][$name . '_border_color'];
+        $border_style = $form_state['values'][$name . '_border_style'];
+        $border_top = $form_state['values'][$name . '_border_top'];
+        $border_right = $form_state['values'][$name . '_border_right'];
+        $border_bottom = $form_state['values'][$name . '_border_bottom'];
+        $border_left = $form_state['values'][$name . '_border_left'];
+
+        $css .= 'border-color: ' . $border_color . '; ';
+        $css .= 'border-width: ' . $border_width . '; ';
+        $css .= $border_top ? 'border-top-style: ' . $border_style . '; ' : '';
+        $css .= $border_right ? 'border-right-style: ' . $border_style . '; ' : '';
+        $css .= $border_bottom ? 'border-bottom-style: ' . $border_style . '; ' : '';
+        $css .= $border_left ? 'border-left-style: ' . $border_style . '; ' : '';
       }
-  }
+    }
 
-  // Generate text shadows
-  if ($form_state['values'][$name . '_use_text_shadow'])  {
-      $distance = $form_state['values'][$name . '_text_shadow_distance'];
-      $blur = $form_state['values'][$name . '_text_shadow_blur'];
-      $color = $form_state['values'][$name . '_text_shadow_color'];
+    // Generate rounded corners
+    if ($use_radius)  {
+      $radius = $form_state['values'][$name . '_radius'];
+      if ($radius) {
+        $top_left_radius = $form_state['values'][$name . '_top_left_radius'];
+        $top_right_radius = $form_state['values'][$name . '_top_right_radius'];
+        $bottom_right_radius = $form_state['values'][$name . '_bottom_right_radius'];
+        $bottom_left_radius = $form_state['values'][$name . '_bottom_left_radius'];
 
-      $css .= 'text-shadow: ' . $distance . ' ' . $distance . ' ' . $blur . ' ' . $color . '; ';
-  }
+        $prefixes = array('-webkit-', '-moz-', '');
+        foreach ($prefixes as $prefix) {
+          $separator = ($prefix == '-moz-') ? '' : '-';
+          $css .= $top_left_radius ? $prefix . 'border-top' . $separator . 'left-radius: ' . $radius . '; ' : '';
+          $css .= $top_right_radius ? $prefix . 'border-top' . $separator . 'right-radius: ' . $radius . '; ' : '';
+          $css .= $bottom_right_radius ? $prefix . 'border-bottom' . $separator . 'right-radius: ' . $radius . '; ' : '';
+          $css .= $bottom_left_radius ? $prefix . 'border-bottom' . $separator . 'left-radius: ' . $radius . '; ' : '';
+        }
+      }
+    }
 
-  $css .= '}' . "\n";
+    // Generate box shadows
+    if ($use_box_shadow)  {
+        $distance = $form_state['values'][$name . '_box_shadow_distance'];
+        $blur = $form_state['values'][$name . '_box_shadow_blur'];
+        $color = $form_state['values'][$name . '_box_shadow_color'];
 
-  // Pseudo elements (link states etc)
-  if ($form_state['values'][$name . '_use_fg'])  {
-    // Link color & decoration
-    $link_color = $form_state['values'][$name . '_link_color'];
-    $link_color = $link_color == '' ? 'inherit' : $link_color;
-    $link_decoration = $form_state['values'][$name . '_link_decoration'];
+        $prefixes = array('-webkit-', '-moz-', '');
+        foreach ($prefixes as $prefix) {
+          $css .= $prefix . 'box-shadow: ' . $distance . ' ' . $distance . ' ' . $blur . ' ' . $color . '; ';
+        }
+    }
 
-    $css .= $css_selector . ':link, ' . $css_selector . ':visited { ';
-    $css .= $link_color ? 'color: ' . $link_color . '; ' : '';
-    $css .= $link_decoration ? 'text-decoration: ' . $link_decoration . '; ' : '';
+    // Generate text shadows
+    if ($use_text_shadow)  {
+        $distance = $form_state['values'][$name . '_text_shadow_distance'];
+        $blur = $form_state['values'][$name . '_text_shadow_blur'];
+        $color = $form_state['values'][$name . '_text_shadow_color'];
+
+        $css .= 'text-shadow: ' . $distance . ' ' . $distance . ' ' . $blur . ' ' . $color . '; ';
+    }
+
     $css .= '}' . "\n";
 
-    // Link hover/focus/active color & decoration
-    $hover_color = $form_state['values'][$name . '_hover_color'];
-    $hover_color = $hover_color == '' ? 'inherit' : $hover_color;
-    $hover_decoration = $form_state['values'][$name . '_hover_decoration'];
+    // Pseudo elements (link states etc)
+    if ($use_fg)  {
+      // Link color & decoration
+      $link_color = $form_state['values'][$name . '_link_color'];
+      $link_color = $link_color == '' ? 'inherit' : $link_color;
+      $link_decoration = $form_state['values'][$name . '_link_decoration'];
 
-    $css .= $css_selector . ':hover, ' . $css_selector . ':focus, ' . $css_selector . ':active { ';
-    $css .= $hover_color ? 'color: ' . $hover_color . '; ' : '';
-    $css .= $hover_decoration ? 'text-decoration: ' . $hover_decoration . '; ' : '';
-    $css .= '}' . "\n";
+      $css .= $css_selector . ':link, ' . $css_selector . ':visited { ';
+      $css .= $link_color ? 'color: ' . $link_color . '; ' : '';
+      $css .= $link_decoration ? 'text-decoration: ' . $link_decoration . '; ' : '';
+      $css .= '}' . "\n";
+
+      // Link hover/focus/active color & decoration
+      $hover_color = $form_state['values'][$name . '_hover_color'];
+      $hover_color = $hover_color == '' ? 'inherit' : $hover_color;
+      $hover_decoration = $form_state['values'][$name . '_hover_decoration'];
+
+      $css .= $css_selector . ':hover, ' . $css_selector . ':focus, ' . $css_selector . ':active { ';
+      $css .= $hover_color ? 'color: ' . $hover_color . '; ' : '';
+      $css .= $hover_decoration ? 'text-decoration: ' . $hover_decoration . '; ' : '';
+      $css .= '}' . "\n";
+    }
   }
 
   return $css;
