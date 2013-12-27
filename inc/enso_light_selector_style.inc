@@ -20,6 +20,52 @@ function enso_light_selector_form($name, $css_selector) {
     '#collapsible' => TRUE, 
     '#collapsed' => TRUE, 
   );
+  // Use layout checkbox
+  $form[$name . '_fieldset'][$name . '_use_layout'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use layout'),
+    '#default_value' => theme_get_setting($name . '_use_layout'),
+    '#tree' => FALSE,
+  );
+  // Layout options fieldset
+  $form[$name . '_fieldset'][$name . '_layout_opts'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Layout options'),
+    '#states' => array(
+      // Hide layout options by default
+      'invisible' => array(
+        'input[name="' . $name . '_use_layout"]' => array('checked' => FALSE),
+      ),
+    ),
+  );
+  // Width
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_layout_width'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#title' => t('Width'),
+    '#default_value' => theme_get_setting($name . '_layout_width'),
+  );
+  // Height
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_layout_height'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#title' => t('Height'),
+    '#default_value' => theme_get_setting($name . '_layout_height'),
+  );
+  // Margins
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_layout_margins'] = array(
+    '#type' => 'textfield',
+    '#size' => '10',
+    '#title' => t('Margins'),
+    '#default_value' => theme_get_setting($name . '_layout_margins'),
+  );
+  // Padding
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_layout_padding'] = array(
+    '#type' => 'textfield',
+    '#size' => '10',
+    '#title' => t('Padding'),
+    '#default_value' => theme_get_setting($name . '_layout_padding'),
+  );
   // Use background colors checkbox
   $form[$name . '_fieldset'][$name . '_use_bg_colors'] = array(
     '#type' => 'checkbox',
@@ -448,6 +494,21 @@ function enso_light_selector_bg_save(&$form, &$form_state, $name) {
 function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
 
   $css = '';
+
+  // Generate layout
+  if ($form_state['values'][$name . '_use_layout'])  {
+    $layout_width = $form_state['values'][$name . '_layout_width'];
+    $layout_height = $form_state['values'][$name . '_layout_height'];
+    $layout_margins = $form_state['values'][$name . '_layout_margins'];
+    $layout_padding = $form_state['values'][$name . '_layout_padding'];
+
+    $css .= $css_selector . ' { ';
+    $css .= $layout_width ? 'width: ' . $layout_width . '; ' : '';
+    $css .= $layout_height ? 'height: ' . $layout_height . '; ' : '';
+    $css .= $layout_margins ? 'margin: ' . $layout_margins . '; ' : '';
+    $css .= $layout_padding ? 'padding: ' . $layout_padding . '; ' : '';
+    $css .= ' }' . "\n";
+  }
 
   // Generate background image
   if ($form_state['values'][$name . '_use_bg_image'])  {
