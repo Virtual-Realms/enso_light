@@ -23,19 +23,18 @@ function enso_light_form_system_theme_settings_alter(&$form, &$form_state)  {
     '#collapsed' => FALSE
   );
   $form['enso']['css_selectors'] = array(
-    '#type' => 'textfield',
-    '#size' => '120',
-    '#maxlength' => '1024',
+    '#type' => 'textarea',
+    '#cols' => '120',
+    '#rows' => '5',
+    '#resizable' => TRUE,
     '#title' => t('CSS Selectors'),
     '#default_value' => theme_get_setting('css_selectors'),
-    '#description' => t('Enter a list of CSS selectors, separated by commas <em>e.g. #header, .footer etc</em>. For each selector specified here, further styling options will be displayed below after saving.'),
+    '#description' => t('Enter a list of CSS selectors, each group on a new line <em>e.g. #header, .footer etc</em>. For each selector specified here, further styling options will be displayed below after saving.'),
   );
 
   // Dynamically generate sets of form elements based on user-defined CSS selectors
-  $css_selectors = explode(',', theme_get_setting('css_selectors'));
+  $css_selectors = explode("\n", theme_get_setting('css_selectors'));
   foreach ($css_selectors as $css_selector) {
-    //$css_selector_prefixes = array('.', '#');
-    //$name = str_replace($css_selector_prefixes, '', $css_selector);
     $css_selector = trim($css_selector);
     $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector));
     $form['enso'][$name] = enso_light_selector_form($name, $css_selector);
@@ -50,7 +49,7 @@ function enso_light_settings_submit(&$form, &$form_state)  {
 
   // Save background images and generate CSS
   $css = '';
-  $css_selectors = explode(',', theme_get_setting('css_selectors'));
+  $css_selectors = explode("\n", theme_get_setting('css_selectors'));
   foreach ($css_selectors as $css_selector) {
     $css_selector = trim($css_selector);
     $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector));

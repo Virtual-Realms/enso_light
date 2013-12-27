@@ -85,8 +85,10 @@ function enso_light_selector_form($name, $css_selector) {
   );
   // Background color(s)
   $form[$name . '_fieldset'][$name . '_bg_color_opts'][$name . '_bg_color'] = array(
-    '#type' => 'textfield',
-    '#size' => '120',
+    '#type' => 'textarea',
+    '#cols' => '15',
+    '#rows' => '5',
+    '#resizable' => TRUE,
     '#title' => t('Background color(s)'),
     '#default_value' => theme_get_setting($name . '_bg_color'),
     '#description' => t('Enter a valid CSS color value <em>e.g. red can be defined as #f00, #ff0000, rgb(255,0,0), rgba(255,0,0,0.0) or simply red. Write transparent for no color.</em>'),
@@ -536,7 +538,7 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
 
     // Generate background colors
     if ($use_bg_colors)  {
-      $bg_colors = explode('|', $form_state['values'][$name . '_bg_color']);
+      $bg_colors = explode("\n", $form_state['values'][$name . '_bg_color']);
       $bg_gradient = $form_state['values'][$name . '_bg_gradient'];
       $bg_url = $form_state['values'][$name . '_use_bg_image'] ? $bg_url . ',' : '';
 
