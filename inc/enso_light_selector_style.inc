@@ -250,18 +250,35 @@ function enso_light_selector_form($name, $css_selector) {
     ),
     '#default_value' => theme_get_setting($name . '_border_style'),
   );
-  // Border apply to
-  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_border_apply_to'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('Apply borders to'),
+  // Borders container
+  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_borders_container'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Apply borders to</label>',    
     '#attributes' => array('class' => array('container-inline')), 
-    '#options' => array(
-      'top' => t('Top'),
-      'right' => t('Right'),
-      'bottom' => t('Bottom'),
-      'left' => t('Left'),
-    ),
-    '#default_value' => array_values(theme_get_setting($name . '_border_apply_to')),
+  );
+  // Borders top
+  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_borders_container'][$name . '_border_top'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Top'),
+    '#default_value' => theme_get_setting($name . '_border_top'),
+  );
+  // Borders right
+  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_borders_container'][$name . '_border_right'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Right'),
+    '#default_value' => theme_get_setting($name . '_border_right'),
+  );
+  // Borders bottom
+  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_borders_container'][$name . '_border_bottom'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Bottom'),
+    '#default_value' => theme_get_setting($name . '_border_bottom'),
+  );
+  // Borders left
+  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_borders_container'][$name . '_border_left'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Left'),
+    '#default_value' => theme_get_setting($name . '_border_left'),
   );
   // Use rounded corners checkbox
   $form[$name . '_fieldset'][$name . '_use_radius'] = array(
@@ -288,18 +305,35 @@ function enso_light_selector_form($name, $css_selector) {
     '#title' => t('Rounded corner radius'),
     '#default_value' => theme_get_setting($name . '_radius'),
   );
-  // Rounded corners apply to
-  $form[$name . '_fieldset'][$name . '_radius_opts'][$name . '_radius_apply_to'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('Apply rounded corners to'),
+  // Rounded corners container
+  $form[$name . '_fieldset'][$name . '_radius_opts'][$name . '_radius_container'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Apply rounded corners to</label>',    
     '#attributes' => array('class' => array('container-inline')), 
-    '#options' => array(
-      'top-left' => t('Top left'),
-      'top-right' => t('Top right'),
-      'bottom-right' => t('Bottom right'),
-      'bottom-left' => t('Bottom left'),
-    ),
-    '#default_value' => array_values(theme_get_setting($name . '_radius_apply_to')),
+  );
+  // Rounded corner radius top-left
+  $form[$name . '_fieldset'][$name . '_radius_opts'][$name . '_radius_container'][$name . '_top_left_radius'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Top-left'),
+    '#default_value' => theme_get_setting($name . '_top_left_radius'),
+  );
+  // Rounded corner radius top-right
+  $form[$name . '_fieldset'][$name . '_radius_opts'][$name . '_radius_container'][$name . '_top_right_radius'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Top-right'),
+    '#default_value' => theme_get_setting($name . '_top_right_radius'),
+  );
+  // Rounded corner radius bottom-right
+  $form[$name . '_fieldset'][$name . '_radius_opts'][$name . '_radius_container'][$name . '_bottom_right_radius'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Bottom-right'),
+    '#default_value' => theme_get_setting($name . '_bottom_right_radius'),
+  );
+  // Rounded corner radius bottom-left
+  $form[$name . '_fieldset'][$name . '_radius_opts'][$name . '_radius_container'][$name . '_bottom_left_radius'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Bottom-left'),
+    '#default_value' => theme_get_setting($name . '_bottom_left_radius'),
   );
   // Use box shadow checkbox
   $form[$name . '_fieldset'][$name . '_use_box_shadow'] = array(
@@ -461,18 +495,18 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
     if ($border_width) {
       $border_color = $form_state['values'][$name . '_border_color'];
       $border_style = $form_state['values'][$name . '_border_style'];
-      $border_top_style = $form_state['values'][$name . '_border_apply_to']['top'] ? $border_style : 'none';
-      $border_right_style = $form_state['values'][$name . '_border_apply_to']['right'] ? $border_style : 'none';
-      $border_bottom_style = $form_state['values'][$name . '_border_apply_to']['bottom'] ? $border_style : 'none';
-      $border_left_style = $form_state['values'][$name . '_border_apply_to']['left'] ? $border_style : 'none';
+      $border_top = $form_state['values'][$name . '_border_top'];
+      $border_right = $form_state['values'][$name . '_border_right'];
+      $border_bottom = $form_state['values'][$name . '_border_bottom'];
+      $border_left = $form_state['values'][$name . '_border_left'];
 
       $css .= $css_selector . ' { ';
       $css .= 'border-color: ' . $border_color . '; ';
       $css .= 'border-width: ' . $border_width . '; ';
-      $css .= 'border-top-style: ' . $border_top_style . '; ';
-      $css .= 'border-right-style: ' . $border_right_style . '; ';
-      $css .= 'border-bottom-style: ' . $border_bottom_style . '; ';
-      $css .= 'border-left-style: ' . $border_left_style . ';';
+      $css .= $border_top ? 'border-top-style: ' . $border_style . '; ' : '';
+      $css .= $border_right ? 'border-right-style: ' . $border_style . '; ' : '';
+      $css .= $border_bottom ? 'border-bottom-style: ' . $border_style . '; ' : '';
+      $css .= $border_left ? 'border-left-style: ' . $border_style . ';' : '';
       $css .= ' }' . "\n";
     }
   }
@@ -481,25 +515,25 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
   if ($form_state['values'][$name . '_use_radius'])  {
     $radius = $form_state['values'][$name . '_radius'];
     if ($radius) {
-      $radius_top_left = $form_state['values'][$name . '_radius_apply_to']['top-left'];
-      $radius_top_right = $form_state['values'][$name . '_radius_apply_to']['top-right'];
-      $radius_bottom_right = $form_state['values'][$name . '_radius_apply_to']['bottom-right'];
-      $radius_bottom_left = $form_state['values'][$name . '_radius_apply_to']['bottom-left'];
+      $top_left_radius = $form_state['values'][$name . '_top_left_radius'];
+      $top_right_radius = $form_state['values'][$name . '_top_right_radius'];
+      $bottom_right_radius = $form_state['values'][$name . '_bottom_right_radius'];
+      $bottom_left_radius = $form_state['values'][$name . '_bottom_left_radius'];
 
       $css .= $css_selector . ' { ';
       $prefixes = array('-webkit-', '-moz-', '');
       foreach ($prefixes as $prefix) {
         $separator = ($prefix == 'moz-') ? '' : '-';
-        if ($radius_top_left) {
+        if ($top_left_radius) {
           $css .= $prefix . 'border-top' . $separator . 'left-radius: ' . $radius . '; ';
         }
-        if ($radius_top_right) {
+        if ($top_right_radius) {
           $css .= $prefix . 'border-top' . $separator . 'right-radius: ' . $radius . '; ';
         }
-        if ($radius_bottom_right) {
+        if ($bottom_right_radius) {
           $css .= $prefix . 'border-bottom' . $separator . 'right-radius: ' . $radius . '; ';
         }
-        if ($radius_bottom_left) {
+        if ($bottom_left_radius) {
           $css .= $prefix . 'border-bottom' . $separator . 'left-radius: ' . $radius . '; ';
         }
       }
