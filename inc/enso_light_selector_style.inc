@@ -523,7 +523,7 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
       $css .= $css_selector . ' { ';
       $prefixes = array('-webkit-', '-moz-', '');
       foreach ($prefixes as $prefix) {
-        $separator = ($prefix == 'moz-') ? '' : '-';
+        $separator = ($prefix == '-moz-') ? '' : '-';
         $css .= $top_left_radius ? $prefix . 'border-top' . $separator . 'left-radius: ' . $radius . '; ' : '';
         $css .= $top_right_radius ? $prefix . 'border-top' . $separator . 'right-radius: ' . $radius . '; ' : '';
         $css .= $bottom_right_radius ? $prefix . 'border-bottom' . $separator . 'right-radius: ' . $radius . '; ' : '';
