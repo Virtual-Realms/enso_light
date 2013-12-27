@@ -15,7 +15,6 @@ function enso_light_selector_form($name, $css_selector) {
 
   $form[$name . '_fieldset'] = array(
     '#type' => 'fieldset',
-    //'#title' => t(ucfirst(str_replace(array('-', '_'), ' ', $name))),
     '#title' => t('Styling for selector "' . $css_selector . '"'),
     '#collapsible' => TRUE, 
     '#collapsed' => TRUE, 
@@ -507,7 +506,7 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
     $css .= $layout_height ? 'height: ' . $layout_height . '; ' : '';
     $css .= $layout_margins ? 'margin: ' . $layout_margins . '; ' : '';
     $css .= $layout_padding ? 'padding: ' . $layout_padding . '; ' : '';
-    $css .= ' }' . "\n";
+    $css .= '}' . "\n";
   }
 
   // Generate background image
@@ -523,7 +522,7 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
     $css .= 'background-position: ' . $bg_position . '; ';
     $css .= 'background-attachment: ' . $bg_attachment . '; ';
     $css .= 'background-repeat: ' . $bg_repeat . '; ';
-    $css .= ' }' . "\n";
+    $css .= '}' . "\n";
   }
 
   // Generate background color
@@ -534,10 +533,10 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
 
     if ($bg_gradient == 'none' && count($bg_colors) >= 1) {
       $css .= $css_selector . ' { ';
-      $css .= 'background-color: ' . $bg_colors[0] . ';'; // fallback
-      $css .= 'background-image: ' . $bg_url . $bg_colors[0] . ';';
-      $css .= 'background-image: ' . $bg_url . $bg_colors[0] . ';';
-      $css .= ' }' . "\n";
+      $css .= 'background-color: ' . $bg_colors[0] . '; '; // fallback
+      $css .= 'background-image: ' . $bg_url . $bg_colors[0] . '; ';
+      $css .= 'background-image: ' . $bg_url . $bg_colors[0] . '; ';
+      $css .= '}' . "\n";
     }
     else if ($bg_gradient != 'none' && count($bg_colors) > 1) {
       $bg_color_str = implode(', ', $bg_colors);
@@ -550,8 +549,8 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
       $css .= 'background-image: ' . $bg_url . ' -o-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . '); ';
       $css .= 'background-image: ' . $bg_url . ' -ms-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . '); ';
       $css .= 'background-image: ' . $bg_url . ' -moz-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . '); ';
-      $css .= 'background-image: ' . $bg_url . ' linear-gradient(' . $grad_standard . $bg_color_str . ');';
-      $css .= ' }' . "\n";
+      $css .= 'background-image: ' . $bg_url . ' linear-gradient(' . $grad_standard . $bg_color_str . '); ';
+      $css .= '}' . "\n";
     }
   }
 
@@ -562,8 +561,8 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
     $color = $color == '' ? 'inherit' : $color;
 
     $css .= $css_selector . ' { ';
-    $css .= 'color: ' . $color . ';';
-    $css .= ' }' . "\n";
+    $css .= 'color: ' . $color . '; ';
+    $css .= '}' . "\n";
   }
 
   // Generate foreground link colors & decoration
@@ -575,8 +574,8 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
 
     $css .= $css_selector . ' a { ';
     $css .= 'color: ' . $link_color . '; ';
-    $css .= 'text-decoration: ' . $link_decoration . ';';
-    $css .= ' }' . "\n";
+    $css .= 'text-decoration: ' . $link_decoration . '; ';
+    $css .= '}' . "\n";
 
     // Link hover/focus color & decoration
     $hover_color = $form_state['values'][$name . '_hover_color'];
@@ -585,8 +584,8 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
 
     $css .= $css_selector . ' a:hover, ' . $css_selector . ' a:focus { ';
     $css .= 'color: ' . $hover_color . '; ';
-    $css .= 'text-decoration: ' . $hover_decoration . ';';
-    $css .= ' }' . "\n";
+    $css .= 'text-decoration: ' . $hover_decoration . '; ';
+    $css .= '}' . "\n";
   }
 
   // Generate borders
@@ -606,8 +605,8 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
       $css .= $border_top ? 'border-top-style: ' . $border_style . '; ' : '';
       $css .= $border_right ? 'border-right-style: ' . $border_style . '; ' : '';
       $css .= $border_bottom ? 'border-bottom-style: ' . $border_style . '; ' : '';
-      $css .= $border_left ? 'border-left-style: ' . $border_style . ';' : '';
-      $css .= ' }' . "\n";
+      $css .= $border_left ? 'border-left-style: ' . $border_style . '; ' : '';
+      $css .= '}' . "\n";
     }
   }
 
@@ -629,7 +628,7 @@ function enso_light_selector_generate_css(&$form_state, $name, $css_selector) {
         $css .= $bottom_right_radius ? $prefix . 'border-bottom' . $separator . 'right-radius: ' . $radius . '; ' : '';
         $css .= $bottom_left_radius ? $prefix . 'border-bottom' . $separator . 'left-radius: ' . $radius . '; ' : '';
       }
-      $css .= ' }' . "\n";
+      $css .= '}' . "\n";
     }
   }
 
