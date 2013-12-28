@@ -68,6 +68,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#title' => t('Padding'),
     '#default_value' => theme_get_setting($name . '_layout_padding'),
   );
+  
   // Use background colors checkbox
   $form[$name . '_fieldset'][$name . '_use_bg_colors'] = array(
     '#type' => 'checkbox',
@@ -107,6 +108,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_bg_gradient'),
   );
+
   // Use background image checkbox
   $form[$name . '_fieldset'][$name . '_use_bg_image'] = array(
     '#type' => 'checkbox',
@@ -125,7 +127,6 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
       ),
     ),
   );
-
   // Default path for background image
   $bg_path = theme_get_setting($name . '_bg_path');
   if (file_uri_scheme($bg_path) == 'public') {
@@ -185,6 +186,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_bg_attachment'),
   );
+
   // Use foreground colors checkbox
   $form[$name . '_fieldset'][$name . '_use_fg'] = array(
     '#type' => 'checkbox',
@@ -223,6 +225,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_text_decoration'),
   );
+
   // Use borders checkbox
   $form[$name . '_fieldset'][$name . '_use_borders'] = array(
     '#type' => 'checkbox',
@@ -302,6 +305,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#title' => t('Left'),
     '#default_value' => theme_get_setting($name . '_border_left'),
   );
+
   // Use rounded corners checkbox
   $form[$name . '_fieldset'][$name . '_use_radius'] = array(
     '#type' => 'checkbox',
@@ -357,6 +361,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#title' => t('Bottom-left'),
     '#default_value' => theme_get_setting($name . '_bottom_left_radius'),
   );
+  
   // Use box shadow checkbox
   $form[$name . '_fieldset'][$name . '_use_box_shadow'] = array(
     '#type' => 'checkbox',
@@ -396,6 +401,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#title' => t('Color'),
     '#default_value' => theme_get_setting($name . '_box_shadow_color'),
   );
+  
   // Use text shadow checkbox
   $form[$name . '_fieldset'][$name . '_use_text_shadow'] = array(
     '#type' => 'checkbox',
@@ -434,6 +440,63 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#size' => '15',
     '#title' => t('Color'),
     '#default_value' => theme_get_setting($name . '_text_shadow_color'),
+  );
+
+  // Use transition
+  $form[$name . '_fieldset'][$name . '_use_transition'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use transition'),
+    '#default_value' => theme_get_setting($name . '_use_transition'),
+    '#tree' => FALSE,
+  );
+  // Transition options fieldset
+  $form[$name . '_fieldset'][$name . '_transition_opts'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Transition options'),
+    '#states' => array(
+      // Hide transition fieldset by default
+      'invisible' => array(
+        'input[name="' . $name . '_use_transition"]' => array('checked' => FALSE),
+      ),
+    ),
+  );
+  // Transition duration
+  $form[$name . '_fieldset'][$name . '_transition_opts'][$name . '_transition_duration'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#title' => t('Duration'),
+    '#default_value' => theme_get_setting($name . '_transition_duration'),
+  );
+  // Transition function
+  $form[$name . '_fieldset'][$name . '_transition_opts'][$name . '_transition_function'] = array(
+    '#type' => 'select',
+    '#title' => t('Function'),
+    '#options' => array(
+      'ease' => t('Ease'),
+      'linear' => t('Linear'),
+      'ease-in' => t('Ease-in'),
+      'ease-out' => t('Ease-out'),
+      'ease-in-out' => t('Ease-in-out'),
+    ),
+    '#default_value' => theme_get_setting($name . '_transition_function'),
+  );
+  // Transition container
+  $form[$name . '_fieldset'][$name . '_transition_opts'][$name . '_transition_container'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Apply transiition to</label>',    
+    '#attributes' => array('class' => array('container-inline')), 
+  );
+  // Transition color
+  $form[$name . '_fieldset'][$name . '_transition_opts'][$name . '_transition_container'][$name . '_transition_fg_color'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Color'),
+    '#default_value' => theme_get_setting($name . '_transition_fg_color'),
+  );
+  // Transition background color
+  $form[$name . '_fieldset'][$name . '_transition_opts'][$name . '_transition_container'][$name . '_transition_bg_color'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Background color'),
+    '#default_value' => theme_get_setting($name . '_transition_bg_color'),
   );
 
   return $form;
@@ -484,6 +547,7 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
   $use_radius = $form_state['values'][$name . '_use_radius'];
   $use_box_shadow = $form_state['values'][$name . '_use_box_shadow'];
   $use_text_shadow = $form_state['values'][$name . '_use_text_shadow'];
+  $use_transition = $form_state['values'][$name . '_use_transition'];
 
   if ($use_layout || $use_bg_image || $use_bg_colors || $use_fg || $use_borders || $use_radius || $use_box_shadow || $use_text_shadow) {
 
@@ -609,6 +673,19 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
         $color = $form_state['values'][$name . '_text_shadow_color'];
 
         $css .= 'text-shadow: ' . $distance . ' ' . $distance . ' ' . $blur . ' ' . $color . '; ';
+    }
+
+    // Generate transitions
+    if ($use_transition)  {
+      $duration = $form_state['values'][$name . '_transition_duration'];
+      $function = $form_state['values'][$name . '_transition_function'];
+      $properties = array();
+      if ($form_state['values'][$name . '_transition_fg_color']) $properties[] = 'color';
+      if ($form_state['values'][$name . '_transition_bg_color']) $properties[] = 'background-color';
+
+      $css .= 'transition-property: ' . implode(', ', $properties) . '; ';
+      $css .= 'transition-duration: ' . $duration . '; ';
+      $css .= 'transition-timing-function: ' . $function . '; ';
     }
 
     $css .= '}' . "\n";
