@@ -545,6 +545,9 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
   $settings = $form_state['values'];
   $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector_name));
 
+  $tab = "  ";
+  $eol = ";\n";
+
   $css = '';
 
   $use_layout = $settings[$name . '_use_layout'];
@@ -559,7 +562,7 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
 
   if ($use_layout || $use_bg_image || $use_bg_colors || $use_fg || $use_borders || $use_radius || $use_box_shadow || $use_text_shadow || $use_transition) {
 
-    $css .= $css_selector . ' { ';
+    $css .= $css_selector . " {\n";
 
     // Generate layout
     if ($use_layout)  {
@@ -568,10 +571,10 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
       $layout_margins = $settings[$name . '_layout_margins'];
       $layout_padding = $settings[$name . '_layout_padding'];
 
-      $css .= $layout_width ? 'width: ' . $layout_width . '; ' : '';
-      $css .= $layout_height ? 'height: ' . $layout_height . '; ' : '';
-      $css .= $layout_margins ? 'margin: ' . $layout_margins . '; ' : '';
-      $css .= $layout_padding ? 'padding: ' . $layout_padding . '; ' : '';
+      $css .= $tab . $layout_width ? 'width: ' . $layout_width . $eol : '';
+      $css .= $tab . $layout_height ? 'height: ' . $layout_height . $eol : '';
+      $css .= $tab . $layout_margins ? 'margin: ' . $layout_margins . $eol : '';
+      $css .= $tab . $layout_padding ? 'padding: ' . $layout_padding . $eol : '';
     }
 
     // Generate background image
@@ -582,10 +585,10 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
       $bg_attachment = $settings[$name . '_bg_attachment'];
       $bg_repeat = $settings[$name . '_bg_repeat'];
 
-      $css .= 'background-image: ' . $bg_url . '; ';
-      $css .= 'background-position: ' . $bg_position . '; ';
-      $css .= 'background-attachment: ' . $bg_attachment . '; ';
-      $css .= 'background-repeat: ' . $bg_repeat . '; ';
+      $css .= $tab . 'background-image: ' . $bg_url . $eol;
+      $css .= $tab . 'background-position: ' . $bg_position . $eol;
+      $css .= $tab . 'background-attachment: ' . $bg_attachment . $eol;
+      $css .= $tab . 'background-repeat: ' . $bg_repeat . $eol;
     }
 
     // Generate background colors
@@ -595,9 +598,9 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
       $bg_url = $settings[$name . '_use_bg_image'] ? $bg_url . ',' : '';
 
       if ($bg_gradient == 'none' && count($bg_colors) >= 1) {
-        $css .= 'background-color: ' . $bg_colors[0] . '; '; // fallback
-        $css .= 'background-image: ' . $bg_url . $bg_colors[0] . '; ';
-        $css .= 'background-image: ' . $bg_url . $bg_colors[0] . '; ';
+        $css .= $tab . 'background-color: ' . $bg_colors[0] . $eol; // fallback
+        $css .= $tab . 'background-image: ' . $bg_url . $bg_colors[0] . $eol;
+        $css .= $tab . 'background-image: ' . $bg_url . $bg_colors[0] . $eol;
       }
       else if ($bg_gradient != 'none' && count($bg_colors) > 1) {
         $bg_color_str = implode(', ', $bg_colors);
@@ -605,11 +608,11 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
         $grad_moz_o_ms = $bg_gradient == 'left-to-right' ? 'right, ' : '';
         $grad_standard = $bg_gradient == 'left-to-right' ? 'to right, ' : '';
 
-        $css .= 'background-image: ' . $bg_url . ' -webkit-linear-gradient(' . $grad_webkit . $bg_color_str . '); ';
-        $css .= 'background-image: ' . $bg_url . ' -o-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . '); ';
-        $css .= 'background-image: ' . $bg_url . ' -ms-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . '); ';
-        $css .= 'background-image: ' . $bg_url . ' -moz-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . '); ';
-        $css .= 'background-image: ' . $bg_url . ' linear-gradient(' . $grad_standard . $bg_color_str . '); ';
+        $css .= $tab . 'background-image: ' . $bg_url . ' -webkit-linear-gradient(' . $grad_webkit . $bg_color_str . ')' . $eol;
+        $css .= $tab . 'background-image: ' . $bg_url . ' -o-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . ')' . $eol;
+        $css .= $tab . 'background-image: ' . $bg_url . ' -ms-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . ')' . $eol;
+        $css .= $tab . 'background-image: ' . $bg_url . ' -moz-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . ')' . $eol;
+        $css .= $tab . 'background-image: ' . $bg_url . ' linear-gradient(' . $grad_standard . $bg_color_str . ')' . $eol;
       }
     }
 
@@ -618,8 +621,8 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
       $color = $settings[$name . '_text_color'];
       $decoration = $settings[$name . '_text_decoration'];
 
-      $css .= 'color: ' . $color . '; ';
-      $css .= 'text-decoration: ' . $decoration . '; ';
+      $css .= $tab . 'color: ' . $color . $eol;
+      $css .= $tab . 'text-decoration: ' . $decoration . $eol;
     }
 
     // Generate borders
@@ -633,12 +636,12 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
         $border_bottom = $settings[$name . '_border_bottom'];
         $border_left = $settings[$name . '_border_left'];
 
-        $css .= 'border-color: ' . $border_color . '; ';
-        $css .= 'border-width: ' . $border_width . '; ';
-        $css .= $border_top ? 'border-top-style: ' . $border_style . '; ' : '';
-        $css .= $border_right ? 'border-right-style: ' . $border_style . '; ' : '';
-        $css .= $border_bottom ? 'border-bottom-style: ' . $border_style . '; ' : '';
-        $css .= $border_left ? 'border-left-style: ' . $border_style . '; ' : '';
+        $css .= $tab . 'border-color: ' . $border_color . $eol;
+        $css .= $tab . 'border-width: ' . $border_width . $eol;
+        $css .= $tab . $border_top ? 'border-top-style: ' . $border_style . $eol : '';
+        $css .= $tab . $border_right ? 'border-right-style: ' . $border_style . $eol : '';
+        $css .= $tab . $border_bottom ? 'border-bottom-style: ' . $border_style . $eol : '';
+        $css .= $tab . $border_left ? 'border-left-style: ' . $border_style . $eol : '';
       }
     }
 
@@ -654,10 +657,10 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
         $prefixes = array('-webkit-', '-moz-', '');
         foreach ($prefixes as $prefix) {
           $separator = ($prefix == '-moz-') ? '' : '-';
-          $css .= $top_left_radius ? $prefix . 'border-top' . $separator . 'left-radius: ' . $radius . '; ' : '';
-          $css .= $top_right_radius ? $prefix . 'border-top' . $separator . 'right-radius: ' . $radius . '; ' : '';
-          $css .= $bottom_right_radius ? $prefix . 'border-bottom' . $separator . 'right-radius: ' . $radius . '; ' : '';
-          $css .= $bottom_left_radius ? $prefix . 'border-bottom' . $separator . 'left-radius: ' . $radius . '; ' : '';
+          $css .= $tab . $top_left_radius ? $prefix . 'border-top' . $separator . 'left-radius: ' . $radius . $eol : '';
+          $css .= $tab . $top_right_radius ? $prefix . 'border-top' . $separator . 'right-radius: ' . $radius . $eol : '';
+          $css .= $tab . $bottom_right_radius ? $prefix . 'border-bottom' . $separator . 'right-radius: ' . $radius . $eol : '';
+          $css .= $tab . $bottom_left_radius ? $prefix . 'border-bottom' . $separator . 'left-radius: ' . $radius . $eol : '';
         }
       }
     }
@@ -670,7 +673,7 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
 
         $prefixes = array('-webkit-', '-moz-', '');
         foreach ($prefixes as $prefix) {
-          $css .= $prefix . 'box-shadow: ' . $distance . ' ' . $distance . ' ' . $blur . ' ' . $color . '; ';
+          $css .= $tab . $prefix . 'box-shadow: ' . $distance . ' ' . $distance . ' ' . $blur . ' ' . $color . $eol;
         }
     }
 
@@ -680,7 +683,7 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
         $blur = $settings[$name . '_text_shadow_blur'];
         $color = $settings[$name . '_text_shadow_color'];
 
-        $css .= 'text-shadow: ' . $distance . ' ' . $distance . ' ' . $blur . ' ' . $color . '; ';
+        $css .= $tab . 'text-shadow: ' . $distance . ' ' . $distance . ' ' . $blur . ' ' . $color . $eol;
     }
 
     // Generate transitions
@@ -692,13 +695,13 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
       if ($settings[$name . '_transition_fg_color']) $properties[] = 'color';
       if ($settings[$name . '_transition_bg_color']) $properties[] = 'background-color';
 
-      $css .= 'transition-property: ' . implode(', ', $properties) . '; ';
-      $css .= 'transition-duration: ' . $duration . '; ';
-      $css .= 'transition-delay: ' . $delay . '; ';
-      $css .= 'transition-timing-function: ' . $function . '; ';
+      $css .= $tab . 'transition-property: ' . implode(', ', $properties) . $eol;
+      $css .= $tab . 'transition-duration: ' . $duration . $eol;
+      $css .= $tab . 'transition-delay: ' . $delay . $eol;
+      $css .= $tab . 'transition-timing-function: ' . $function . $eol;
     }
 
-    $css .= '}' . "\n";
+    $css .= '}' . "\n\n";
   }
 
   return $css;
