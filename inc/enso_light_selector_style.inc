@@ -12,6 +12,10 @@
 function enso_light_selector_form($css_selector, $css_selector_name) {
 
   $css_length_units = drupal_map_assoc(array('px', 'pt', 'in', 'cm', 'mm', 'pc', 'em', 'ex', '%'));
+  $css_auto_or_other = array(
+      'auto' => t('Auto'),
+      'other' => t('Other ...'),
+  );
 
   $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector_name));
 
@@ -43,18 +47,66 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
   );
   // Width
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_layout_width'] = array(
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_width_cont'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Width</label>',    
+    '#attributes' => array('class' => array('container-inline')), 
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_width_cont'][$name . '_width'] = array(
+    '#type' => 'select',
+    '#options' => $css_auto_or_other,
+    '#default_value' => theme_get_setting($name . '_width'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_width_cont'][$name . '_width_val'] = array(
     '#type' => 'textfield',
     '#size' => '5',
-    '#title' => t('Width'),
-    '#default_value' => theme_get_setting($name . '_layout_width'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_width"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_width_val'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_width_cont'][$name . '_width_unit'] = array(
+    '#type' => 'select',
+    '#options' => $css_length_units,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_width"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_width_unit'),
   );
   // Height
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_layout_height'] = array(
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_height_cont'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Height</label>',    
+    '#attributes' => array('class' => array('container-inline')), 
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_height_cont'][$name . '_height'] = array(
+    '#type' => 'select',
+    '#options' => $css_auto_or_other,
+    '#default_value' => theme_get_setting($name . '_height'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_height_cont'][$name . '_height_val'] = array(
     '#type' => 'textfield',
     '#size' => '5',
-    '#title' => t('Height'),
-    '#default_value' => theme_get_setting($name . '_layout_height'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_height"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_height_val'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_height_cont'][$name . '_height_unit'] = array(
+    '#type' => 'select',
+    '#options' => $css_length_units,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_height"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_height_unit'),
   );
   // Margins
   $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_layout_margins'] = array(
@@ -630,8 +682,34 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
       $layout_margins = $settings[$name . '_layout_margins'];
       $layout_padding = $settings[$name . '_layout_padding'];*/
 
-      $css .= $tab . $settings[$name . '_layout_width'] ? 'width: ' . $settings[$name . '_layout_width'] . $eol : '';
-      $css .= $tab . $settings[$name . '_layout_height'] ? 'height: ' . $settings[$name . '_layout_height'] . $eol : '';
+      // Width
+      if ($settings[$name . '_width'] == 'other') {
+        if ($settings[$name . '_width_val']) {
+          $width = $settings[$name . '_width_val'] . $settings[$name . '_width_unit'];
+        }
+        else {
+          $width = '';
+        }
+      }
+      else {
+        $width = $settings[$name . '_width'];
+      }
+
+      // Height
+      if ($settings[$name . '_height'] == 'other') {
+        if ($settings[$name . '_height_val']) {
+          $height = $settings[$name . '_height_val'] . $settings[$name . '_height_unit'];
+        }
+        else {
+          $height = '';
+        }
+      }
+      else {
+        $height = $settings[$name . '_height'];
+      }
+
+      $css .= $width ? $tab . 'width: ' . $width . $eol : '';
+      $css .= $height ? $tab . 'height: ' . $height . $eol : '';
       $css .= $tab . $settings[$name . '_layout_margins'] ? 'margin: ' . $settings[$name . '_layout_margins'] . $eol : '';
       $css .= $tab . $settings[$name . '_layout_padding'] ? 'padding: ' . $settings[$name . '_layout_padding'] . $eol : '';
     }
