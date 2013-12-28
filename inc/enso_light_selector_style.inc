@@ -13,6 +13,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
 
   $css_length_units = drupal_map_assoc(array('px', 'pt', 'in', 'cm', 'mm', 'pc', 'em', 'ex', '%'));
   $css_auto_or_other = array(
+      'unspecified' => '',
       'auto' => t('Auto'),
       'other' => t('Other ...'),
   );
@@ -108,12 +109,129 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_height_unit'),
   );
-  // Margins
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_layout_margins'] = array(
+  // Margin top
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_top_cont'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Top margin</label>',    
+    '#attributes' => array('class' => array('container-inline')), 
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_top_cont'][$name . '_margin_top'] = array(
+    '#type' => 'select',
+    '#options' => $css_auto_or_other,
+    '#default_value' => theme_get_setting($name . '_margin_top'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_top_cont'][$name . '_margin_top_val'] = array(
     '#type' => 'textfield',
-    '#size' => '10',
-    '#title' => t('Margins'),
-    '#default_value' => theme_get_setting($name . '_layout_margins'),
+    '#size' => '5',
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_margin_top"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_margin_top_val'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_top_cont'][$name . '_margin_top_unit'] = array(
+    '#type' => 'select',
+    '#options' => $css_length_units,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_margin_top"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_margin_top_unit'),
+  );
+  // Margin right
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_right_cont'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Right margin</label>',    
+    '#attributes' => array('class' => array('container-inline')), 
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_right_cont'][$name . '_margin_right'] = array(
+    '#type' => 'select',
+    '#options' => $css_auto_or_other,
+    '#default_value' => theme_get_setting($name . '_margin_right'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_right_cont'][$name . '_margin_right_val'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_margin_right"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_margin_right_val'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_right_cont'][$name . '_margin_right_unit'] = array(
+    '#type' => 'select',
+    '#options' => $css_length_units,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_margin_right"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_margin_right_unit'),
+  );
+  // Margin bottom
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_bottom_cont'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Bottom margin</label>',    
+    '#attributes' => array('class' => array('container-inline')), 
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_bottom_cont'][$name . '_margin_bottom'] = array(
+    '#type' => 'select',
+    '#options' => $css_auto_or_other,
+    '#default_value' => theme_get_setting($name . '_margin_bottom'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_bottom_cont'][$name . '_margin_bottom_val'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_margin_bottom"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_margin_bottom_val'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_bottom_cont'][$name . '_margin_bottom_unit'] = array(
+    '#type' => 'select',
+    '#options' => $css_length_units,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_margin_bottom"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_margin_bottom_unit'),
+  );
+  // Margin left
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_left_cont'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Left margin</label>',    
+    '#attributes' => array('class' => array('container-inline')), 
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_left_cont'][$name . '_margin_left'] = array(
+    '#type' => 'select',
+    '#options' => $css_auto_or_other,
+    '#default_value' => theme_get_setting($name . '_margin_left'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_left_cont'][$name . '_margin_left_val'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_margin_left"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_margin_left_val'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_left_cont'][$name . '_margin_left_unit'] = array(
+    '#type' => 'select',
+    '#options' => $css_length_units,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_margin_left"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_margin_left_unit'),
   );
   // Padding
   $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_layout_padding'] = array(
@@ -683,7 +801,10 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
       $layout_padding = $settings[$name . '_layout_padding'];*/
 
       // Width
-      if ($settings[$name . '_width'] == 'other') {
+      if ($settings[$name . '_width'] == 'unspecified') {
+        $width = '';
+      }
+      else if ($settings[$name . '_width'] == 'other') {
         if ($settings[$name . '_width_val']) {
           $width = $settings[$name . '_width_val'] . $settings[$name . '_width_unit'];
         }
@@ -696,7 +817,10 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
       }
 
       // Height
-      if ($settings[$name . '_height'] == 'other') {
+      if ($settings[$name . '_height'] == 'unspecified') {
+        $height = '';
+      }
+      else if ($settings[$name . '_height'] == 'other') {
         if ($settings[$name . '_height_val']) {
           $height = $settings[$name . '_height_val'] . $settings[$name . '_height_unit'];
         }
@@ -708,9 +832,76 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
         $height = $settings[$name . '_height'];
       }
 
+      // Top margin
+      if ($settings[$name . '_margin_top'] == 'unspecified') {
+        $margin_top = '';
+      }
+      else if ($settings[$name . '_margin_top'] == 'other') {
+        if ($settings[$name . '_margin_top_val']) {
+          $margin_top = $settings[$name . '_margin_top_val'] . $settings[$name . '_margin_top_unit'];
+        }
+        else {
+          $margin_top = '';
+        }
+      }
+      else {
+        $margin_top = $settings[$name . '_margin_top'];
+      }
+
+      // Right margin
+      if ($settings[$name . '_margin_right'] == 'unspecified') {
+        $margin_right = '';
+      }
+      else if ($settings[$name . '_margin_right'] == 'other') {
+        if ($settings[$name . '_margin_right_val']) {
+          $margin_right = $settings[$name . '_margin_right_val'] . $settings[$name . '_margin_right_unit'];
+        }
+        else {
+          $margin_right = '';
+        }
+      }
+      else {
+        $margin_right = $settings[$name . '_margin_right'];
+      }
+
+      // Bottom margin
+      if ($settings[$name . '_margin_bottom'] == 'unspecified') {
+        $margin_bottom = '';
+      }
+      else if ($settings[$name . '_margin_bottom'] == 'other') {
+        if ($settings[$name . '_margin_bottom_val']) {
+          $margin_bottom = $settings[$name . '_margin_bottom_val'] . $settings[$name . '_margin_bottom_unit'];
+        }
+        else {
+          $margin_bottom = '';
+        }
+      }
+      else {
+        $margin_bottom = $settings[$name . '_margin_bottom'];
+      }
+
+      // Left margin
+      if ($settings[$name . '_margin_left'] == 'unspecified') {
+        $margin_left = '';
+      }
+      else if ($settings[$name . '_margin_left'] == 'other') {
+        if ($settings[$name . '_margin_left_val']) {
+          $margin_left = $settings[$name . '_margin_left_val'] . $settings[$name . '_margin_left_unit'];
+        }
+        else {
+          $margin_left = '';
+        }
+      }
+      else {
+        $margin_left = $settings[$name . '_margin_left'];
+      }
+
       $css .= $width ? $tab . 'width: ' . $width . $eol : '';
       $css .= $height ? $tab . 'height: ' . $height . $eol : '';
-      $css .= $tab . $settings[$name . '_layout_margins'] ? 'margin: ' . $settings[$name . '_layout_margins'] . $eol : '';
+      $css .= $margin_top ? $tab . 'margin-top: ' . $margin_top . $eol : '';
+      $css .= $margin_right ? $tab . 'margin-right: ' . $margin_right . $eol : '';
+      $css .= $margin_bottom ? $tab . 'margin-bottom: ' . $margin_bottom . $eol : '';
+      $css .= $margin_left ? $tab . 'margin-left: ' . $margin_left . $eol : '';
       $css .= $tab . $settings[$name . '_layout_padding'] ? 'padding: ' . $settings[$name . '_layout_padding'] . $eol : '';
     }
 
