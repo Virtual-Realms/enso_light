@@ -542,30 +542,31 @@ function enso_light_selector_bg_save(&$form, &$form_state, $css_selector_name) {
  */
 function enso_light_selector_generate_css(&$form_state, $css_selector, $css_selector_name) {
 
+  $settings = $form_state['values'];
   $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector_name));
 
   $css = '';
 
-  $use_layout = $form_state['values'][$name . '_use_layout'];
-  $use_bg_image = $form_state['values'][$name . '_use_bg_image'];
-  $use_bg_colors = $form_state['values'][$name . '_use_bg_colors'];
-  $use_fg = $form_state['values'][$name . '_use_fg'];
-  $use_borders = $form_state['values'][$name . '_use_borders'];
-  $use_radius = $form_state['values'][$name . '_use_radius'];
-  $use_box_shadow = $form_state['values'][$name . '_use_box_shadow'];
-  $use_text_shadow = $form_state['values'][$name . '_use_text_shadow'];
-  $use_transition = $form_state['values'][$name . '_use_transition'];
+  $use_layout = $settings[$name . '_use_layout'];
+  $use_bg_image = $settings[$name . '_use_bg_image'];
+  $use_bg_colors = $settings[$name . '_use_bg_colors'];
+  $use_fg = $settings[$name . '_use_fg'];
+  $use_borders = $settings[$name . '_use_borders'];
+  $use_radius = $settings[$name . '_use_radius'];
+  $use_box_shadow = $settings[$name . '_use_box_shadow'];
+  $use_text_shadow = $settings[$name . '_use_text_shadow'];
+  $use_transition = $settings[$name . '_use_transition'];
 
-  if ($use_layout || $use_bg_image || $use_bg_colors || $use_fg || $use_borders || $use_radius || $use_box_shadow || $use_text_shadow) {
+  if ($use_layout || $use_bg_image || $use_bg_colors || $use_fg || $use_borders || $use_radius || $use_box_shadow || $use_text_shadow || $use_transition) {
 
     $css .= $css_selector . ' { ';
 
     // Generate layout
     if ($use_layout)  {
-      $layout_width = $form_state['values'][$name . '_layout_width'];
-      $layout_height = $form_state['values'][$name . '_layout_height'];
-      $layout_margins = $form_state['values'][$name . '_layout_margins'];
-      $layout_padding = $form_state['values'][$name . '_layout_padding'];
+      $layout_width = $settings[$name . '_layout_width'];
+      $layout_height = $settings[$name . '_layout_height'];
+      $layout_margins = $settings[$name . '_layout_margins'];
+      $layout_padding = $settings[$name . '_layout_padding'];
 
       $css .= $layout_width ? 'width: ' . $layout_width . '; ' : '';
       $css .= $layout_height ? 'height: ' . $layout_height . '; ' : '';
@@ -576,10 +577,10 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
     // Generate background image
     if ($use_bg_image)  {
 
-      $bg_url = 'url(\'' . file_create_url($form_state['values'][$name . '_bg_path']) . '\')';
-      $bg_position = $form_state['values'][$name . '_bg_position'];
-      $bg_attachment = $form_state['values'][$name . '_bg_attachment'];
-      $bg_repeat = $form_state['values'][$name . '_bg_repeat'];
+      $bg_url = 'url(\'' . file_create_url($settings[$name . '_bg_path']) . '\')';
+      $bg_position = $settings[$name . '_bg_position'];
+      $bg_attachment = $settings[$name . '_bg_attachment'];
+      $bg_repeat = $settings[$name . '_bg_repeat'];
 
       $css .= 'background-image: ' . $bg_url . '; ';
       $css .= 'background-position: ' . $bg_position . '; ';
@@ -589,9 +590,9 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
 
     // Generate background colors
     if ($use_bg_colors)  {
-      $bg_colors = explode("\n", $form_state['values'][$name . '_bg_color']);
-      $bg_gradient = $form_state['values'][$name . '_bg_gradient'];
-      $bg_url = $form_state['values'][$name . '_use_bg_image'] ? $bg_url . ',' : '';
+      $bg_colors = explode("\n", $settings[$name . '_bg_color']);
+      $bg_gradient = $settings[$name . '_bg_gradient'];
+      $bg_url = $settings[$name . '_use_bg_image'] ? $bg_url . ',' : '';
 
       if ($bg_gradient == 'none' && count($bg_colors) >= 1) {
         $css .= 'background-color: ' . $bg_colors[0] . '; '; // fallback
@@ -614,8 +615,8 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
 
     // Generate foreground color
     if ($use_fg)  {
-      $color = $form_state['values'][$name . '_text_color'];
-      $decoration = $form_state['values'][$name . '_text_decoration'];
+      $color = $settings[$name . '_text_color'];
+      $decoration = $settings[$name . '_text_decoration'];
 
       $css .= 'color: ' . $color . '; ';
       $css .= 'text-decoration: ' . $decoration . '; ';
@@ -623,14 +624,14 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
 
     // Generate borders
     if ($use_borders)  {
-      $border_width = $form_state['values'][$name . '_border_width'];
+      $border_width = $settings[$name . '_border_width'];
       if ($border_width) {
-        $border_color = $form_state['values'][$name . '_border_color'];
-        $border_style = $form_state['values'][$name . '_border_style'];
-        $border_top = $form_state['values'][$name . '_border_top'];
-        $border_right = $form_state['values'][$name . '_border_right'];
-        $border_bottom = $form_state['values'][$name . '_border_bottom'];
-        $border_left = $form_state['values'][$name . '_border_left'];
+        $border_color = $settings[$name . '_border_color'];
+        $border_style = $settings[$name . '_border_style'];
+        $border_top = $settings[$name . '_border_top'];
+        $border_right = $settings[$name . '_border_right'];
+        $border_bottom = $settings[$name . '_border_bottom'];
+        $border_left = $settings[$name . '_border_left'];
 
         $css .= 'border-color: ' . $border_color . '; ';
         $css .= 'border-width: ' . $border_width . '; ';
@@ -643,12 +644,12 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
 
     // Generate rounded corners
     if ($use_radius)  {
-      $radius = $form_state['values'][$name . '_radius'];
+      $radius = $settings[$name . '_radius'];
       if ($radius) {
-        $top_left_radius = $form_state['values'][$name . '_top_left_radius'];
-        $top_right_radius = $form_state['values'][$name . '_top_right_radius'];
-        $bottom_right_radius = $form_state['values'][$name . '_bottom_right_radius'];
-        $bottom_left_radius = $form_state['values'][$name . '_bottom_left_radius'];
+        $top_left_radius = $settings[$name . '_top_left_radius'];
+        $top_right_radius = $settings[$name . '_top_right_radius'];
+        $bottom_right_radius = $settings[$name . '_bottom_right_radius'];
+        $bottom_left_radius = $settings[$name . '_bottom_left_radius'];
 
         $prefixes = array('-webkit-', '-moz-', '');
         foreach ($prefixes as $prefix) {
@@ -663,9 +664,9 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
 
     // Generate box shadows
     if ($use_box_shadow)  {
-        $distance = $form_state['values'][$name . '_box_shadow_distance'];
-        $blur = $form_state['values'][$name . '_box_shadow_blur'];
-        $color = $form_state['values'][$name . '_box_shadow_color'];
+        $distance = $settings[$name . '_box_shadow_distance'];
+        $blur = $settings[$name . '_box_shadow_blur'];
+        $color = $settings[$name . '_box_shadow_color'];
 
         $prefixes = array('-webkit-', '-moz-', '');
         foreach ($prefixes as $prefix) {
@@ -675,21 +676,21 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
 
     // Generate text shadows
     if ($use_text_shadow)  {
-        $distance = $form_state['values'][$name . '_text_shadow_distance'];
-        $blur = $form_state['values'][$name . '_text_shadow_blur'];
-        $color = $form_state['values'][$name . '_text_shadow_color'];
+        $distance = $settings[$name . '_text_shadow_distance'];
+        $blur = $settings[$name . '_text_shadow_blur'];
+        $color = $settings[$name . '_text_shadow_color'];
 
         $css .= 'text-shadow: ' . $distance . ' ' . $distance . ' ' . $blur . ' ' . $color . '; ';
     }
 
     // Generate transitions
     if ($use_transition)  {
-      $duration = $form_state['values'][$name . '_transition_duration'];
-      $delay = $form_state['values'][$name . '_transition_delay'];
-      $function = $form_state['values'][$name . '_transition_function'];
+      $duration = $settings[$name . '_transition_duration'];
+      $delay = $settings[$name . '_transition_delay'];
+      $function = $settings[$name . '_transition_function'];
       $properties = array();
-      if ($form_state['values'][$name . '_transition_fg_color']) $properties[] = 'color';
-      if ($form_state['values'][$name . '_transition_bg_color']) $properties[] = 'background-color';
+      if ($settings[$name . '_transition_fg_color']) $properties[] = 'color';
+      if ($settings[$name . '_transition_bg_color']) $properties[] = 'background-color';
 
       $css .= 'transition-property: ' . implode(', ', $properties) . '; ';
       $css .= 'transition-duration: ' . $duration . '; ';
