@@ -11,6 +11,8 @@
  */
 function enso_light_selector_form($css_selector, $css_selector_name) {
 
+  $css_length_units = drupal_map_assoc(array('px', 'pt', 'in', 'cm', 'mm', 'pc', 'em', 'ex', '%'));
+
   $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector_name));
 
   $form = array();
@@ -145,22 +147,77 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#title' => t('Upload background image'),
     '#description' => t('Upload a new image for the background.'),
   );
-  // Background position
-  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_position'] = array(
+  // Background position (X)
+  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_x_cont'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Background position (X)</label>',    
+    '#attributes' => array('class' => array('container-inline')), 
+  );
+  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_x_cont'][$name . '_bg_pos_x'] = array(
     '#type' => 'select',
-    '#title' => t('Background position'),
     '#options' => array(
-      'left top' => t('Left top'),
-      'left center' => t('Left center'),
-      'left bottom' => t('Left bottom'),
-      'right top' => t('Right top'),
-      'right center' => t('Right center'),
-      'right bottom' => t('Right bottom'),
-      'center top' => t('Center top'),
-      'center center' => t('Center center'),
-      'center bottom' => t('Center bottom'),
+      'left' => t('Left'),
+      'center' => t('Center'),
+      'right' => t('Right'),
+      'other' => t('Other ...'),
     ),
-    '#default_value' => theme_get_setting($name . '_bg_position'),
+    '#default_value' => theme_get_setting($name . '_bg_pos_x'),
+  );
+  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_x_cont'][$name . '_bg_pos_x_val'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_bg_pos_x"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_bg_pos_x_val'),
+  );
+  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_x_cont'][$name . '_bg_pos_x_unit'] = array(
+    '#type' => 'select',
+    '#options' => $css_length_units,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_bg_pos_x"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_bg_pos_x_unit'),
+  );
+  // Background position (Y)
+  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_y_cont'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Background position (Y)</label>',    
+    '#attributes' => array('class' => array('container-inline')), 
+  );
+  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_y_cont'][$name . '_bg_pos_y'] = array(
+    '#type' => 'select',
+    '#options' => array(
+      'top' => t('Top'),
+      'center' => t('Center'),
+      'bottom' => t('Bottom'),
+      'other' => t('Other ...'),
+    ),
+    '#default_value' => theme_get_setting($name . '_bg_pos_y'),
+  );
+  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_y_cont'][$name . '_bg_pos_y_val'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_bg_pos_y"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_bg_pos_y_val'),
+  );
+  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_y_cont'][$name . '_bg_pos_y_unit'] = array(
+    '#type' => 'select',
+    '#options' => $css_length_units,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_bg_pos_y"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_bg_pos_y_unit'),
   );
   // Background repeat
   $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_repeat'] = array(
@@ -550,6 +607,7 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
 
   $css = '';
 
+/*
   $use_layout = $settings[$name . '_use_layout'];
   $use_bg_image = $settings[$name . '_use_bg_image'];
   $use_bg_colors = $settings[$name . '_use_bg_colors'];
@@ -559,54 +617,81 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
   $use_box_shadow = $settings[$name . '_use_box_shadow'];
   $use_text_shadow = $settings[$name . '_use_text_shadow'];
   $use_transition = $settings[$name . '_use_transition'];
+*/
 
-  if ($use_layout || $use_bg_image || $use_bg_colors || $use_fg || $use_borders || $use_radius || $use_box_shadow || $use_text_shadow || $use_transition) {
+  if ($settings[$name . '_use_layout'] || $settings[$name . '_use_bg_image'] || $settings[$name . '_use_bg_colors'] || $settings[$name . '_use_fg'] || $settings[$name . '_use_borders'] || $settings[$name . '_use_radius'] || $settings[$name . '_use_box_shadow'] || $settings[$name . '_use_text_shadow'] || $settings[$name . '_use_transition']) {
 
     $css .= $css_selector . " {\n";
 
     // Generate layout
-    if ($use_layout)  {
-      $layout_width = $settings[$name . '_layout_width'];
+    if ($settings[$name . '_use_layout'])  {
+      /*$layout_width = $settings[$name . '_layout_width'];
       $layout_height = $settings[$name . '_layout_height'];
       $layout_margins = $settings[$name . '_layout_margins'];
-      $layout_padding = $settings[$name . '_layout_padding'];
+      $layout_padding = $settings[$name . '_layout_padding'];*/
 
-      $css .= $tab . $layout_width ? 'width: ' . $layout_width . $eol : '';
-      $css .= $tab . $layout_height ? 'height: ' . $layout_height . $eol : '';
-      $css .= $tab . $layout_margins ? 'margin: ' . $layout_margins . $eol : '';
-      $css .= $tab . $layout_padding ? 'padding: ' . $layout_padding . $eol : '';
+      $css .= $tab . $settings[$name . '_layout_width'] ? 'width: ' . $settings[$name . '_layout_width'] . $eol : '';
+      $css .= $tab . $settings[$name . '_layout_height'] ? 'height: ' . $settings[$name . '_layout_height'] . $eol : '';
+      $css .= $tab . $settings[$name . '_layout_margins'] ? 'margin: ' . $settings[$name . '_layout_margins'] . $eol : '';
+      $css .= $tab . $settings[$name . '_layout_padding'] ? 'padding: ' . $settings[$name . '_layout_padding'] . $eol : '';
     }
 
     // Generate background image
-    if ($use_bg_image)  {
+    if ($settings[$name . '_use_bg_image'])  {
 
       $bg_url = 'url(\'' . file_create_url($settings[$name . '_bg_path']) . '\')';
-      $bg_position = $settings[$name . '_bg_position'];
+      /*$bg_position = $settings[$name . '_bg_position'];
       $bg_attachment = $settings[$name . '_bg_attachment'];
-      $bg_repeat = $settings[$name . '_bg_repeat'];
+      $bg_repeat = $settings[$name . '_bg_repeat'];*/
+
+      // Background position X
+      if ($settings[$name . '_bg_pos_x'] == 'other') {
+        if ($settings[$name . '_bg_pos_x_val']) {
+          $bg_pos_x = $settings[$name . '_bg_pos_x_val'] . $settings[$name . '_bg_pos_x_unit'];
+        }
+        else {
+          $bg_pos_x = '';
+        }
+      }
+      else {
+        $bg_pos_x = $settings[$name . '_bg_pos_x'];
+      }
+
+      // Background position Y
+      if ($settings[$name . '_bg_pos_y'] == 'other') {
+        if ($settings[$name . '_bg_pos_y_val']) {
+          $bg_pos_y = $settings[$name . '_bg_pos_y_val'] . $settings[$name . '_bg_pos_y_unit'];
+        }
+        else {
+          $bg_pos_y = '';
+        }
+      }
+      else {
+        $bg_pos_y = $settings[$name . '_bg_pos_y'];
+      }
 
       $css .= $tab . 'background-image: ' . $bg_url . $eol;
-      $css .= $tab . 'background-position: ' . $bg_position . $eol;
-      $css .= $tab . 'background-attachment: ' . $bg_attachment . $eol;
-      $css .= $tab . 'background-repeat: ' . $bg_repeat . $eol;
+      $css .= $tab . 'background-position: ' . $bg_pos_x . ' ' . $bg_pos_y . $eol;
+      $css .= $tab . 'background-attachment: ' . $settings[$name . '_bg_attachment'] . $eol;
+      $css .= $tab . 'background-repeat: ' . $settings[$name . '_bg_repeat'] . $eol;
     }
 
     // Generate background colors
-    if ($use_bg_colors)  {
+    if ($settings[$name . '_use_bg_colors'])  {
       $bg_colors = explode("\n", $settings[$name . '_bg_color']);
-      $bg_gradient = $settings[$name . '_bg_gradient'];
+      //$bg_gradient = $settings[$name . '_bg_gradient'];
       $bg_url = $settings[$name . '_use_bg_image'] ? $bg_url . ',' : '';
 
-      if ($bg_gradient == 'none' && count($bg_colors) >= 1) {
+      if ($settings[$name . '_bg_gradient'] == 'none' && count($bg_colors) >= 1) {
         $css .= $tab . 'background-color: ' . $bg_colors[0] . $eol; // fallback
         $css .= $tab . 'background-image: ' . $bg_url . $bg_colors[0] . $eol;
         $css .= $tab . 'background-image: ' . $bg_url . $bg_colors[0] . $eol;
       }
-      else if ($bg_gradient != 'none' && count($bg_colors) > 1) {
+      else if ($settings[$name . '_bg_gradient'] != 'none' && count($bg_colors) > 1) {
         $bg_color_str = implode(', ', $bg_colors);
-        $grad_webkit = $bg_gradient == 'left-to-right' ? 'left, ' : '';
-        $grad_moz_o_ms = $bg_gradient == 'left-to-right' ? 'right, ' : '';
-        $grad_standard = $bg_gradient == 'left-to-right' ? 'to right, ' : '';
+        $grad_webkit = $settings[$name . '_bg_gradient'] == 'left-to-right' ? 'left, ' : '';
+        $grad_moz_o_ms = $settings[$name . '_bg_gradient'] == 'left-to-right' ? 'right, ' : '';
+        $grad_standard = $settings[$name . '_bg_gradient'] == 'left-to-right' ? 'to right, ' : '';
 
         $css .= $tab . 'background-image: ' . $bg_url . ' -webkit-linear-gradient(' . $grad_webkit . $bg_color_str . ')' . $eol;
         $css .= $tab . 'background-image: ' . $bg_url . ' -o-linear-gradient(' . $grad_moz_o_ms . $bg_color_str . ')' . $eol;
@@ -617,37 +702,37 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
     }
 
     // Generate foreground color
-    if ($use_fg)  {
-      $color = $settings[$name . '_text_color'];
-      $decoration = $settings[$name . '_text_decoration'];
+    if ($settings[$name . '_use_fg'])  {
+      /*$color = $settings[$name . '_text_color'];
+      $decoration = $settings[$name . '_text_decoration'];*/
 
-      $css .= $tab . 'color: ' . $color . $eol;
-      $css .= $tab . 'text-decoration: ' . $decoration . $eol;
+      $css .= $tab . 'color: ' . $settings[$name . '_text_color'] . $eol;
+      $css .= $tab . 'text-decoration: ' . $settings[$name . '_text_decoration'] . $eol;
     }
 
     // Generate borders
-    if ($use_borders)  {
-      $border_width = $settings[$name . '_border_width'];
-      if ($border_width) {
-        $border_color = $settings[$name . '_border_color'];
+    if ($settings[$name . '_use_borders'])  {
+      //$border_width = $settings[$name . '_border_width'];
+      if ($settings[$name . '_border_width']) {
+        /*$border_color = $settings[$name . '_border_color'];
         $border_style = $settings[$name . '_border_style'];
         $border_top = $settings[$name . '_border_top'];
         $border_right = $settings[$name . '_border_right'];
         $border_bottom = $settings[$name . '_border_bottom'];
-        $border_left = $settings[$name . '_border_left'];
+        $border_left = $settings[$name . '_border_left'];*/
 
-        $css .= $tab . 'border-color: ' . $border_color . $eol;
-        $css .= $tab . 'border-width: ' . $border_width . $eol;
-        $css .= $tab . $border_top ? 'border-top-style: ' . $border_style . $eol : '';
-        $css .= $tab . $border_right ? 'border-right-style: ' . $border_style . $eol : '';
-        $css .= $tab . $border_bottom ? 'border-bottom-style: ' . $border_style . $eol : '';
-        $css .= $tab . $border_left ? 'border-left-style: ' . $border_style . $eol : '';
+        $css .= $tab . 'border-color: ' . $settings[$name . '_border_color'] . $eol;
+        $css .= $tab . 'border-width: ' . $settings[$name . '_border_width'] . $eol;
+        $css .= $tab . $settings[$name . '_border_top'] ? 'border-top-style: ' . $settings[$name . '_border_style'] . $eol : '';
+        $css .= $tab . $settings[$name . '_border_right'] ? 'border-right-style: ' . $settings[$name . '_border_style'] . $eol : '';
+        $css .= $tab . $settings[$name . '_border_bottom'] ? 'border-bottom-style: ' . $settings[$name . '_border_style'] . $eol : '';
+        $css .= $tab . $settings[$name . '_border_left'] ? 'border-left-style: ' . $settings[$name . '_border_style'] . $eol : '';
       }
     }
 
     // Generate rounded corners
-    if ($use_radius)  {
-      $radius = $settings[$name . '_radius'];
+    if ($settings[$name . '_use_radius'])  {
+      //$radius = $settings[$name . '_radius'];
       if ($radius) {
         $top_left_radius = $settings[$name . '_top_left_radius'];
         $top_right_radius = $settings[$name . '_top_right_radius'];
@@ -657,16 +742,16 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
         $prefixes = array('-webkit-', '-moz-', '');
         foreach ($prefixes as $prefix) {
           $separator = ($prefix == '-moz-') ? '' : '-';
-          $css .= $tab . $top_left_radius ? $prefix . 'border-top' . $separator . 'left-radius: ' . $radius . $eol : '';
-          $css .= $tab . $top_right_radius ? $prefix . 'border-top' . $separator . 'right-radius: ' . $radius . $eol : '';
-          $css .= $tab . $bottom_right_radius ? $prefix . 'border-bottom' . $separator . 'right-radius: ' . $radius . $eol : '';
-          $css .= $tab . $bottom_left_radius ? $prefix . 'border-bottom' . $separator . 'left-radius: ' . $radius . $eol : '';
+          $css .= $tab . $top_left_radius ? $prefix . 'border-top' . $separator . 'left-radius: ' . $settings[$name . '_radius'] . $eol : '';
+          $css .= $tab . $top_right_radius ? $prefix . 'border-top' . $separator . 'right-radius: ' . $settings[$name . '_radius'] . $eol : '';
+          $css .= $tab . $bottom_right_radius ? $prefix . 'border-bottom' . $separator . 'right-radius: ' . $settings[$name . '_radius'] . $eol : '';
+          $css .= $tab . $bottom_left_radius ? $prefix . 'border-bottom' . $separator . 'left-radius: ' . $settings[$name . '_radius'] . $eol : '';
         }
       }
     }
 
     // Generate box shadows
-    if ($use_box_shadow)  {
+    if ($settings[$name . '_use_box_shadow'])  {
         $distance = $settings[$name . '_box_shadow_distance'];
         $blur = $settings[$name . '_box_shadow_blur'];
         $color = $settings[$name . '_box_shadow_color'];
@@ -678,7 +763,7 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
     }
 
     // Generate text shadows
-    if ($use_text_shadow)  {
+    if ($settings[$name . '_use_text_shadow'])  {
         $distance = $settings[$name . '_text_shadow_distance'];
         $blur = $settings[$name . '_text_shadow_blur'];
         $color = $settings[$name . '_text_shadow_color'];
@@ -687,7 +772,7 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
     }
 
     // Generate transitions
-    if ($use_transition)  {
+    if ($settings[$name . '_use_transition'])  {
       $duration = $settings[$name . '_transition_duration'];
       $delay = $settings[$name . '_transition_delay'];
       $function = $settings[$name . '_transition_function'];
