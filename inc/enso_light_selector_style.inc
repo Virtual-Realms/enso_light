@@ -233,12 +233,129 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_margin_left_unit'),
   );
-  // Padding
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_layout_padding'] = array(
+  // Padding top
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_top_cont'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Top padding</label>',    
+    '#attributes' => array('class' => array('container-inline')), 
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_top_cont'][$name . '_padding_top'] = array(
+    '#type' => 'select',
+    '#options' => $css_auto_or_other,
+    '#default_value' => theme_get_setting($name . '_padding_top'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_top_cont'][$name . '_padding_top_val'] = array(
     '#type' => 'textfield',
-    '#size' => '10',
-    '#title' => t('Padding'),
-    '#default_value' => theme_get_setting($name . '_layout_padding'),
+    '#size' => '5',
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_padding_top"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_padding_top_val'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_top_cont'][$name . '_padding_top_unit'] = array(
+    '#type' => 'select',
+    '#options' => $css_length_units,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_padding_top"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_padding_top_unit'),
+  );
+  // Padding right
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_right_cont'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Right padding</label>',    
+    '#attributes' => array('class' => array('container-inline')), 
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_right_cont'][$name . '_padding_right'] = array(
+    '#type' => 'select',
+    '#options' => $css_auto_or_other,
+    '#default_value' => theme_get_setting($name . '_padding_right'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_right_cont'][$name . '_padding_right_val'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_padding_right"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_padding_right_val'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_right_cont'][$name . '_padding_right_unit'] = array(
+    '#type' => 'select',
+    '#options' => $css_length_units,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_padding_right"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_padding_right_unit'),
+  );
+  // Padding bottom
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_bottom_cont'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Bottom padding</label>',    
+    '#attributes' => array('class' => array('container-inline')), 
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_bottom_cont'][$name . '_padding_bottom'] = array(
+    '#type' => 'select',
+    '#options' => $css_auto_or_other,
+    '#default_value' => theme_get_setting($name . '_padding_bottom'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_bottom_cont'][$name . '_padding_bottom_val'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_padding_bottom"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_padding_bottom_val'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_bottom_cont'][$name . '_padding_bottom_unit'] = array(
+    '#type' => 'select',
+    '#options' => $css_length_units,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_padding_bottom"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_padding_bottom_unit'),
+  );
+  // Padding left
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_left_cont'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Left padding</label>',    
+    '#attributes' => array('class' => array('container-inline')), 
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_left_cont'][$name . '_padding_left'] = array(
+    '#type' => 'select',
+    '#options' => $css_auto_or_other,
+    '#default_value' => theme_get_setting($name . '_padding_left'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_left_cont'][$name . '_padding_left_val'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_padding_left"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_padding_left_val'),
+  );
+  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_left_cont'][$name . '_padding_left_unit'] = array(
+    '#type' => 'select',
+    '#options' => $css_length_units,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="' . $name . '_padding_left"]' => array('value' => 'other'),
+      ),
+    ),
+    '#default_value' => theme_get_setting($name . '_padding_left_unit'),
   );
 
   // Use background colors checkbox
@@ -795,106 +912,16 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
 
     // Generate layout
     if ($settings[$name . '_use_layout'])  {
-      /*$layout_width = $settings[$name . '_layout_width'];
-      $layout_height = $settings[$name . '_layout_height'];
-      $layout_margins = $settings[$name . '_layout_margins'];
-      $layout_padding = $settings[$name . '_layout_padding'];*/
-
-      // Width
-      if ($settings[$name . '_width'] == 'unspecified') {
-        $width = '';
-      }
-      else if ($settings[$name . '_width'] == 'other') {
-        if ($settings[$name . '_width_val']) {
-          $width = $settings[$name . '_width_val'] . $settings[$name . '_width_unit'];
-        }
-        else {
-          $width = '';
-        }
-      }
-      else {
-        $width = $settings[$name . '_width'];
-      }
-
-      // Height
-      if ($settings[$name . '_height'] == 'unspecified') {
-        $height = '';
-      }
-      else if ($settings[$name . '_height'] == 'other') {
-        if ($settings[$name . '_height_val']) {
-          $height = $settings[$name . '_height_val'] . $settings[$name . '_height_unit'];
-        }
-        else {
-          $height = '';
-        }
-      }
-      else {
-        $height = $settings[$name . '_height'];
-      }
-
-      // Top margin
-      if ($settings[$name . '_margin_top'] == 'unspecified') {
-        $margin_top = '';
-      }
-      else if ($settings[$name . '_margin_top'] == 'other') {
-        if ($settings[$name . '_margin_top_val']) {
-          $margin_top = $settings[$name . '_margin_top_val'] . $settings[$name . '_margin_top_unit'];
-        }
-        else {
-          $margin_top = '';
-        }
-      }
-      else {
-        $margin_top = $settings[$name . '_margin_top'];
-      }
-
-      // Right margin
-      if ($settings[$name . '_margin_right'] == 'unspecified') {
-        $margin_right = '';
-      }
-      else if ($settings[$name . '_margin_right'] == 'other') {
-        if ($settings[$name . '_margin_right_val']) {
-          $margin_right = $settings[$name . '_margin_right_val'] . $settings[$name . '_margin_right_unit'];
-        }
-        else {
-          $margin_right = '';
-        }
-      }
-      else {
-        $margin_right = $settings[$name . '_margin_right'];
-      }
-
-      // Bottom margin
-      if ($settings[$name . '_margin_bottom'] == 'unspecified') {
-        $margin_bottom = '';
-      }
-      else if ($settings[$name . '_margin_bottom'] == 'other') {
-        if ($settings[$name . '_margin_bottom_val']) {
-          $margin_bottom = $settings[$name . '_margin_bottom_val'] . $settings[$name . '_margin_bottom_unit'];
-        }
-        else {
-          $margin_bottom = '';
-        }
-      }
-      else {
-        $margin_bottom = $settings[$name . '_margin_bottom'];
-      }
-
-      // Left margin
-      if ($settings[$name . '_margin_left'] == 'unspecified') {
-        $margin_left = '';
-      }
-      else if ($settings[$name . '_margin_left'] == 'other') {
-        if ($settings[$name . '_margin_left_val']) {
-          $margin_left = $settings[$name . '_margin_left_val'] . $settings[$name . '_margin_left_unit'];
-        }
-        else {
-          $margin_left = '';
-        }
-      }
-      else {
-        $margin_left = $settings[$name . '_margin_left'];
-      }
+      $width = _enso_light_get_css_value($settings[$name . '_width'], $settings[$name . '_width_val'], $settings[$name . '_width_unit']);
+      $height = _enso_light_get_css_value($settings[$name . '_height'], $settings[$name . '_height_val'], $settings[$name . '_height_unit']);
+      $margin_top = _enso_light_get_css_value($settings[$name . '_margin_top'], $settings[$name . '_margin_top_val'], $settings[$name . '_margin_top_unit']);
+      $margin_right = _enso_light_get_css_value($settings[$name . '_margin_right'], $settings[$name . '_margin_right_val'], $settings[$name . '_margin_right_unit']);
+      $margin_bottom = _enso_light_get_css_value($settings[$name . '_margin_bottom'], $settings[$name . '_margin_bottom_val'], $settings[$name . '_margin_bottom_unit']);
+      $margin_left = _enso_light_get_css_value($settings[$name . '_margin_left'], $settings[$name . '_margin_left_val'], $settings[$name . '_margin_left_unit']);
+      $padding_top = _enso_light_get_css_value($settings[$name . '_padding_top'], $settings[$name . '_padding_top_val'], $settings[$name . '_padding_top_unit']);
+      $padding_right = _enso_light_get_css_value($settings[$name . '_padding_right'], $settings[$name . '_padding_right_val'], $settings[$name . '_padding_right_unit']);
+      $padding_bottom = _enso_light_get_css_value($settings[$name . '_padding_bottom'], $settings[$name . '_padding_bottom_val'], $settings[$name . '_padding_bottom_unit']);
+      $padding_left = _enso_light_get_css_value($settings[$name . '_padding_left'], $settings[$name . '_padding_left_val'], $settings[$name . '_padding_left_unit']);
 
       $css .= $width ? $tab . 'width: ' . $width . $eol : '';
       $css .= $height ? $tab . 'height: ' . $height . $eol : '';
@@ -902,7 +929,10 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
       $css .= $margin_right ? $tab . 'margin-right: ' . $margin_right . $eol : '';
       $css .= $margin_bottom ? $tab . 'margin-bottom: ' . $margin_bottom . $eol : '';
       $css .= $margin_left ? $tab . 'margin-left: ' . $margin_left . $eol : '';
-      $css .= $tab . $settings[$name . '_layout_padding'] ? 'padding: ' . $settings[$name . '_layout_padding'] . $eol : '';
+      $css .= $padding_top ? $tab . 'padding-top: ' . $padding_top . $eol : '';
+      $css .= $padding_right ? $tab . 'padding-right: ' . $padding_right . $eol : '';
+      $css .= $padding_bottom ? $tab . 'padding-bottom: ' . $padding_bottom . $eol : '';
+      $css .= $padding_left ? $tab . 'padding-left: ' . $padding_left . $eol : '';
     }
 
     // Generate background image
@@ -1059,4 +1089,24 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
   }
 
   return $css;
+}
+
+
+function _enso_light_get_css_value($property, $value, $unit) {
+  if ($property == 'unspecified') {
+    $css_rule = '';
+  }
+  else if ($property == 'other') {
+    if ($value) {
+      $css_rule = $value . $unit;
+    }
+    else {
+      $css_rule = '';
+    }
+  }
+  else {
+    $css_rule = $property;
+  }
+
+  return $css_rule; 
 }
