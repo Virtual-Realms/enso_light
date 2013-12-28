@@ -68,7 +68,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#title' => t('Padding'),
     '#default_value' => theme_get_setting($name . '_layout_padding'),
   );
-  
+
   // Use background colors checkbox
   $form[$name . '_fieldset'][$name . '_use_bg_colors'] = array(
     '#type' => 'checkbox',
@@ -467,6 +467,13 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#title' => t('Duration'),
     '#default_value' => theme_get_setting($name . '_transition_duration'),
   );
+  // Transition delay
+  $form[$name . '_fieldset'][$name . '_transition_opts'][$name . '_transition_delay'] = array(
+    '#type' => 'textfield',
+    '#size' => '5',
+    '#title' => t('Delay'),
+    '#default_value' => theme_get_setting($name . '_transition_delay'),
+  );
   // Transition function
   $form[$name . '_fieldset'][$name . '_transition_opts'][$name . '_transition_function'] = array(
     '#type' => 'select',
@@ -483,7 +490,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
   // Transition container
   $form[$name . '_fieldset'][$name . '_transition_opts'][$name . '_transition_container'] = array(
     '#type' => 'container',
-    '#prefix' => '<label>Apply transiition to</label>',    
+    '#prefix' => '<label>Apply transition to</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
   // Transition color
@@ -678,6 +685,7 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
     // Generate transitions
     if ($use_transition)  {
       $duration = $form_state['values'][$name . '_transition_duration'];
+      $delay = $form_state['values'][$name . '_transition_delay'];
       $function = $form_state['values'][$name . '_transition_function'];
       $properties = array();
       if ($form_state['values'][$name . '_transition_fg_color']) $properties[] = 'color';
@@ -685,6 +693,7 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
 
       $css .= 'transition-property: ' . implode(', ', $properties) . '; ';
       $css .= 'transition-duration: ' . $duration . '; ';
+      $css .= 'transition-delay: ' . $delay . '; ';
       $css .= 'transition-timing-function: ' . $function . '; ';
     }
 
