@@ -594,7 +594,6 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
   // Text color
   $form[$name . '_fieldset']['fg_options'][$name . '_text_color'] = array(
     '#type' => 'textfield',
-    '#size' => '15',
     '#title' => t('Text color'),
     '#default_value' => theme_get_setting($name . '_text_color'),
     '#attributes' => array('class' => array('spectrum')), 
@@ -634,7 +633,6 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
   // Border color
   $form[$name . '_fieldset']['border_options'][$name . '_border_color'] = array(
     '#type' => 'textfield',
-    '#size' => '15',
     '#title' => t('Border color'),
     '#default_value' => theme_get_setting($name . '_border_color'),
     '#attributes' => array('class' => array('spectrum')), 
@@ -785,9 +783,9 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
   // Box shadow color
   $form[$name . '_fieldset']['box_shadow_options'][$name . '_box_shadow_color'] = array(
     '#type' => 'textfield',
-    '#size' => '15',
     '#title' => t('Color'),
     '#default_value' => theme_get_setting($name . '_box_shadow_color'),
+    '#attributes' => array('class' => array('spectrum')), 
   );
   
   // Use text shadow checkbox
@@ -825,9 +823,9 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
   // Text shadow color
   $form[$name . '_fieldset']['text_shadow_options'][$name . '_text_shadow_color'] = array(
     '#type' => 'textfield',
-    '#size' => '15',
     '#title' => t('Color'),
     '#default_value' => theme_get_setting($name . '_text_shadow_color'),
+    '#attributes' => array('class' => array('spectrum')), 
   );
 
   // Use transition
