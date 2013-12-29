@@ -377,6 +377,31 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_padding_left_unit'),
   );
+  // Float
+  $form[$name . '_fieldset']['layout_options'][$name . '_float'] = array(
+    '#type' => 'select',
+    '#title' => t('Float'),
+    '#options' => array(
+      'unspecified' => '',
+      'left' => t('Left'),
+      'right' => t('Right'),
+      'none' => t('None'),
+    ),
+    '#default_value' => theme_get_setting($name . '_float'),
+  );
+  // Clear
+  $form[$name . '_fieldset']['layout_options'][$name . '_clear'] = array(
+    '#type' => 'select',
+    '#title' => t('Clear'),
+    '#options' => array(
+      'unspecified' => '',
+      'left' => t('Left'),
+      'right' => t('Right'),
+      'both' => t('Both'),
+      'none' => t('None'),
+    ),
+    '#default_value' => theme_get_setting($name . '_clear'),
+  );
 
   // Use background colors checkbox
   $form[$name . '_fieldset'][$name . '_use_bg_colors'] = array(
@@ -968,6 +993,9 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
       $padding_right = _enso_light_get_css_value($settings[$name . '_padding_right'], $settings[$name . '_padding_right_val'], $settings[$name . '_padding_right_unit']);
       $padding_bottom = _enso_light_get_css_value($settings[$name . '_padding_bottom'], $settings[$name . '_padding_bottom_val'], $settings[$name . '_padding_bottom_unit']);
       $padding_left = _enso_light_get_css_value($settings[$name . '_padding_left'], $settings[$name . '_padding_left_val'], $settings[$name . '_padding_left_unit']);
+      $float = $settings[$name . '_float'] != 'unspecified' ? $settings[$name . '_float'] : '';
+      $clear = $settings[$name . '_clear'] != 'unspecified' ? $settings[$name . '_clear'] : '';
+
 
       $css .= $width ? $tab . 'width: ' . $width . $eol : '';
       $css .= $height ? $tab . 'height: ' . $height . $eol : '';
@@ -979,6 +1007,8 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
       $css .= $padding_right ? $tab . 'padding-right: ' . $padding_right . $eol : '';
       $css .= $padding_bottom ? $tab . 'padding-bottom: ' . $padding_bottom . $eol : '';
       $css .= $padding_left ? $tab . 'padding-left: ' . $padding_left . $eol : '';
+      $css .= $float ? $tab . 'float: ' . $float . $eol : '';
+      $css .= $clear ? $tab . 'clear: ' . $clear . $eol : '';
     }
 
     // Generate background image
