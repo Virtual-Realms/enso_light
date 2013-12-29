@@ -26,6 +26,7 @@ function enso_light_form_system_theme_settings_alter(&$form, &$form_state)  {
     showAlpha: true,
     showInitial: true,
     showInput: true,
+    preferredFormat: "rgb",
     clickoutFiresChange: true,
     showButtons: false
   });';

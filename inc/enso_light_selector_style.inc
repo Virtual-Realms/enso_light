@@ -1012,12 +1012,12 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
         $border_bottom = $settings[$name . '_border_bottom'];
         $border_left = $settings[$name . '_border_left'];*/
 
-        $css .= $tab . 'border-color: ' . $settings[$name . '_border_color'] . $eol;
+        $css .= $settings[$name . '_border_color'] ? $tab . 'border-color: ' . $settings[$name . '_border_color'] . $eol : '';
         $css .= $tab . 'border-width: ' . $settings[$name . '_border_width'] . $eol;
-        $css .= $tab . $settings[$name . '_border_top'] ? 'border-top-style: ' . $settings[$name . '_border_style'] . $eol : '';
-        $css .= $tab . $settings[$name . '_border_right'] ? 'border-right-style: ' . $settings[$name . '_border_style'] . $eol : '';
-        $css .= $tab . $settings[$name . '_border_bottom'] ? 'border-bottom-style: ' . $settings[$name . '_border_style'] . $eol : '';
-        $css .= $tab . $settings[$name . '_border_left'] ? 'border-left-style: ' . $settings[$name . '_border_style'] . $eol : '';
+        $css .= $settings[$name . '_border_top'] ? $tab . 'border-top-style: ' . $settings[$name . '_border_style'] . $eol : '';
+        $css .= $settings[$name . '_border_right'] ? $tab . 'border-right-style: ' . $settings[$name . '_border_style'] . $eol : '';
+        $css .= $settings[$name . '_border_bottom'] ? $tab . 'border-bottom-style: ' . $settings[$name . '_border_style'] . $eol : '';
+        $css .= $settings[$name . '_border_left'] ? $tab . 'border-left-style: ' . $settings[$name . '_border_style'] . $eol : '';
       }
     }
 
