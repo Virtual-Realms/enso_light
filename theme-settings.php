@@ -43,6 +43,19 @@ function enso_light_form_system_theme_settings_alter(&$form, &$form_state)  {
     '#collapsed' => FALSE
   );
 
+  // TESTING: issue with ajax / managed files https://drupal.org/node/1892664
+  /*
+  $form['enso']['imagefield'] = array(
+    '#type' => 'managed_file',
+    '#title' => t('Choose a background image'),
+    '#progress_indicator'=>'throbber',
+    '#progress_message' => t('Please wait...'),
+    '#upload_location' => 'public://adaptivetheme/',
+    '#theme' => 'fapi_image_preview',
+    '#default_value' => theme_get_setting('imagefield'),
+  );
+  */
+
   $form['enso']['css_selectors'] = array(
     '#type' => 'textarea',
     '#cols' => '120',
@@ -59,12 +72,34 @@ function enso_light_form_system_theme_settings_alter(&$form, &$form_state)  {
     $css_selector_pair = explode('|', $css_selector_line);
     $css_selector = trim($css_selector_pair[0]);
     $css_selector_name = trim($css_selector_pair[1]);
-    $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector_name));
+    $name = _enso_light_css_selector_to_name($css_selector_name);
     $form['enso'][$name] = enso_light_selector_form($css_selector, $css_selector_name);
   }
 
   // Attach custom submit handler to the form
   $form['#submit'][] = 'enso_light_settings_submit';
+
+
+  /**
+   * WORKAROUND for issue with ajax / managed files
+   *
+   * See:
+   *    Drupal core issue: https://drupal.org/node/1296362
+   *    AdaptiveTheme issue: https://drupal.org/node/1892664
+   *    Workaround: http://www.victheme.com/blog/drupal-7-form-missing-include-files
+   **/
+  $files = array();
+  $files[] = drupal_get_path('theme', 'adaptivetheme') . '/inc/forms/at_core.validate.inc';
+  $files[] = drupal_get_path('theme', 'adaptivetheme') . '/inc/forms/at_core.submit.inc';
+  $files[] = drupal_get_path('theme', 'enso_light') . '/theme-settings.php';
+  foreach ($files as $file) {
+    if (!isset($form_state['build_info']['files'][$file])) { 
+      if (is_file($file)) { 
+        require_once $file;
+        $form_state['build_info']['files'][$file] = $file; 
+      } 
+    }
+  }
 
 }
 
@@ -91,4 +126,13 @@ function enso_light_settings_submit(&$form, &$form_state)  {
   $filepath = $path . '/' . $file_name;
   file_unmanaged_save_data($css, $filepath, FILE_EXISTS_REPLACE);
 
+
+/*
+  $file = file_load($form_state['values']['imagefield']);
+  if ($file) {
+    $file->status = FILE_STATUS_PERMANENT;
+    file_usage_add($file, 'enso_light', 'user', 1);
+    file_save($file);
+  }
+*/
 }

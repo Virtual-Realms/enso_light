@@ -18,7 +18,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
       'other' => t('Other ...'),
   );
 
-  $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector_name));
+  $name = _enso_light_css_selector_to_name($css_selector_name);
 
   $form = array();
 
@@ -487,6 +487,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
       ),
     ),
   );
+  /*
   // Default path for background image
   $bg_path = theme_get_setting($name . '_bg_path');
   if (file_uri_scheme($bg_path) == 'public') {
@@ -504,6 +505,16 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#type' => 'file',
     '#title' => t('Upload background image'),
     '#description' => t('Upload a new image for the background.'),
+  );
+  */
+  $form[$name . '_fieldset']['bg_image_options'][$name . '_bg_image'] = array(
+    '#type' => 'managed_file',
+    '#title' => t('Choose a background image'),
+    '#progress_indicator'=>'throbber',
+    '#progress_message' => t('Please wait...'),
+    '#upload_location' => 'public://adaptivetheme/',
+    '#theme' => 'fapi_image_preview',
+    '#default_value' => theme_get_setting($name . '_bg_image'),
   );
   // Background position (X)
   $form[$name . '_fieldset']['bg_image_options'][$name . '_bg_pos_x_cont'] = array(
@@ -929,8 +940,9 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
  */
 function enso_light_selector_bg_save(&$form, &$form_state, $css_selector_name) {
 
-  $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector_name));
+  $name = _enso_light_css_selector_to_name($css_selector_name);
 
+  /*
   // Get the previous value
   $previous = 'public://' . $form['enso'][$name][$name . '_fieldset']['bg_image_options'][$name . '_bg_path']['#default_value'];
   $file = file_save_upload($name . '_bg_upload');
@@ -949,6 +961,14 @@ function enso_light_selector_bg_save(&$form, &$form_state, $css_selector_name) {
     // Avoid error when the form is submitted without specifying a new image
     $_POST[$name . '_bg_path'] = $form_state['values'][$name . '_bg_path'] = $previous;
   }
+  */
+
+  $file = file_load($form_state['values'][$name . '_bg_image']);
+  if ($file) {
+    $file->status = FILE_STATUS_PERMANENT;
+    file_usage_add($file, 'enso_light', 'user', 1);
+    file_save($file);
+  }  
 
 }
 
@@ -1014,7 +1034,14 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
     // Generate background image
     if ($settings[$name . '_use_bg_image'])  {
 
-      $bg_url = 'url(\'' . file_create_url($settings[$name . '_bg_path']) . '\')';
+      //$bg_url = 'url(\'' . file_create_url($settings[$name . '_bg_path']) . '\')';
+      $file = file_load($settings[$name . '_bg_image']);
+      if ($file) {
+        $bg_url = 'url(\'' . file_create_url($file->uri) . '\')';
+      }
+      else {
+        $bg_url = 'url()';
+      }
 
       $bg_pos_x = _enso_light_get_css_value($settings[$name . '_bg_pos_x'], $settings[$name . '_bg_pos_x_val'], $settings[$name . '_bg_pos_x_unit']);
       $bg_pos_y = _enso_light_get_css_value($settings[$name . '_bg_pos_y'], $settings[$name . '_bg_pos_y_val'], $settings[$name . '_bg_pos_y_unit']);
@@ -1169,4 +1196,9 @@ function _enso_light_get_css_value($type, $value, $units) {
   }
 
   return $css_value; 
+}
+
+
+function _enso_light_css_selector_to_name($css_selector_name) {
+  return preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector_name));
 }
