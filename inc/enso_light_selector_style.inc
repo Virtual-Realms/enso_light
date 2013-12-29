@@ -37,7 +37,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#tree' => FALSE,
   );
   // Layout options fieldset
-  $form[$name . '_fieldset'][$name . '_layout_opts'] = array(
+  $form[$name . '_fieldset']['layout_options'] = array(
     '#type' => 'fieldset',
     '#title' => t('Layout options'),
     '#states' => array(
@@ -48,17 +48,17 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
   );
   // Width
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_width_cont'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_width_cont'] = array(
     '#type' => 'container',
     '#prefix' => '<label>Width</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_width_cont'][$name . '_width'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_width_cont'][$name . '_width'] = array(
     '#type' => 'select',
     '#options' => $css_auto_or_other,
     '#default_value' => theme_get_setting($name . '_width'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_width_cont'][$name . '_width_val'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_width_cont'][$name . '_width_val'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#states' => array(
@@ -68,7 +68,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_width_val'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_width_cont'][$name . '_width_unit'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_width_cont'][$name . '_width_unit'] = array(
     '#type' => 'select',
     '#options' => $css_length_units,
     '#states' => array(
@@ -79,17 +79,17 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#default_value' => theme_get_setting($name . '_width_unit'),
   );
   // Height
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_height_cont'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_height_cont'] = array(
     '#type' => 'container',
     '#prefix' => '<label>Height</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_height_cont'][$name . '_height'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_height_cont'][$name . '_height'] = array(
     '#type' => 'select',
     '#options' => $css_auto_or_other,
     '#default_value' => theme_get_setting($name . '_height'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_height_cont'][$name . '_height_val'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_height_cont'][$name . '_height_val'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#states' => array(
@@ -99,7 +99,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_height_val'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_height_cont'][$name . '_height_unit'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_height_cont'][$name . '_height_unit'] = array(
     '#type' => 'select',
     '#options' => $css_length_units,
     '#states' => array(
@@ -110,18 +110,22 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#default_value' => theme_get_setting($name . '_height_unit'),
   );
   // Margin top
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_top_cont'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_top_cont'] = array(
     '#type' => 'container',
-    '#prefix' => '<label>Top margin</label>',    
+    '#prefix' => '<label>Margins</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_top_cont'][$name . '_margin_top'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_top_cont'][$name . '_margin_top'] = array(
     '#type' => 'select',
+    '#title' => 'Top',
     '#options' => $css_auto_or_other,
     '#default_value' => theme_get_setting($name . '_margin_top'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_top_cont'][$name . '_margin_top_val'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_top_cont'][$name . '_margin_top_val'] = array(
     '#type' => 'textfield',
+    '#title' => 'Top margin value',
+    '#title_display' => 'invisible',
+    '#element_validate' => array('element_validate_number'),
     '#size' => '5',
     '#states' => array(
       'visible' => array(
@@ -130,7 +134,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_margin_top_val'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_top_cont'][$name . '_margin_top_unit'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_top_cont'][$name . '_margin_top_unit'] = array(
     '#type' => 'select',
     '#options' => $css_length_units,
     '#states' => array(
@@ -141,18 +145,22 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#default_value' => theme_get_setting($name . '_margin_top_unit'),
   );
   // Margin right
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_right_cont'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_right_cont'] = array(
     '#type' => 'container',
-    '#prefix' => '<label>Right margin</label>',    
+    //'#prefix' => '<label>Right margin</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_right_cont'][$name . '_margin_right'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_right_cont'][$name . '_margin_right'] = array(
     '#type' => 'select',
+    '#title' => 'Right',
     '#options' => $css_auto_or_other,
     '#default_value' => theme_get_setting($name . '_margin_right'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_right_cont'][$name . '_margin_right_val'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_right_cont'][$name . '_margin_right_val'] = array(
     '#type' => 'textfield',
+    '#title' => 'Right margin value',
+    '#title_display' => 'invisible',
+    '#element_validate' => array('element_validate_number'),
     '#size' => '5',
     '#states' => array(
       'visible' => array(
@@ -161,7 +169,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_margin_right_val'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_right_cont'][$name . '_margin_right_unit'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_right_cont'][$name . '_margin_right_unit'] = array(
     '#type' => 'select',
     '#options' => $css_length_units,
     '#states' => array(
@@ -172,18 +180,22 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#default_value' => theme_get_setting($name . '_margin_right_unit'),
   );
   // Margin bottom
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_bottom_cont'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_bottom_cont'] = array(
     '#type' => 'container',
-    '#prefix' => '<label>Bottom margin</label>',    
+    //'#prefix' => '<label>Bottom margin</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_bottom_cont'][$name . '_margin_bottom'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_bottom_cont'][$name . '_margin_bottom'] = array(
     '#type' => 'select',
+    '#title' => 'Bottom',
     '#options' => $css_auto_or_other,
     '#default_value' => theme_get_setting($name . '_margin_bottom'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_bottom_cont'][$name . '_margin_bottom_val'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_bottom_cont'][$name . '_margin_bottom_val'] = array(
     '#type' => 'textfield',
+    '#title' => 'Bottom margin value',
+    '#title_display' => 'invisible',
+    '#element_validate' => array('element_validate_number'),
     '#size' => '5',
     '#states' => array(
       'visible' => array(
@@ -192,7 +204,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_margin_bottom_val'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_bottom_cont'][$name . '_margin_bottom_unit'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_bottom_cont'][$name . '_margin_bottom_unit'] = array(
     '#type' => 'select',
     '#options' => $css_length_units,
     '#states' => array(
@@ -203,18 +215,22 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#default_value' => theme_get_setting($name . '_margin_bottom_unit'),
   );
   // Margin left
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_left_cont'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_left_cont'] = array(
     '#type' => 'container',
-    '#prefix' => '<label>Left margin</label>',    
+    //'#prefix' => '<label>Left margin</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_left_cont'][$name . '_margin_left'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_left_cont'][$name . '_margin_left'] = array(
     '#type' => 'select',
+    '#title' => 'Left',
     '#options' => $css_auto_or_other,
     '#default_value' => theme_get_setting($name . '_margin_left'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_left_cont'][$name . '_margin_left_val'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_left_cont'][$name . '_margin_left_val'] = array(
     '#type' => 'textfield',
+    '#title' => 'Left margin value',
+    '#title_display' => 'invisible',
+    '#element_validate' => array('element_validate_number'),
     '#size' => '5',
     '#states' => array(
       'visible' => array(
@@ -223,7 +239,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_margin_left_val'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_margin_left_cont'][$name . '_margin_left_unit'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_margin_left_cont'][$name . '_margin_left_unit'] = array(
     '#type' => 'select',
     '#options' => $css_length_units,
     '#states' => array(
@@ -234,17 +250,17 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#default_value' => theme_get_setting($name . '_margin_left_unit'),
   );
   // Padding top
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_top_cont'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_top_cont'] = array(
     '#type' => 'container',
     '#prefix' => '<label>Top padding</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_top_cont'][$name . '_padding_top'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_top_cont'][$name . '_padding_top'] = array(
     '#type' => 'select',
     '#options' => $css_auto_or_other,
     '#default_value' => theme_get_setting($name . '_padding_top'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_top_cont'][$name . '_padding_top_val'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_top_cont'][$name . '_padding_top_val'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#states' => array(
@@ -254,7 +270,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_padding_top_val'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_top_cont'][$name . '_padding_top_unit'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_top_cont'][$name . '_padding_top_unit'] = array(
     '#type' => 'select',
     '#options' => $css_length_units,
     '#states' => array(
@@ -265,17 +281,17 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#default_value' => theme_get_setting($name . '_padding_top_unit'),
   );
   // Padding right
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_right_cont'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_right_cont'] = array(
     '#type' => 'container',
     '#prefix' => '<label>Right padding</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_right_cont'][$name . '_padding_right'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_right_cont'][$name . '_padding_right'] = array(
     '#type' => 'select',
     '#options' => $css_auto_or_other,
     '#default_value' => theme_get_setting($name . '_padding_right'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_right_cont'][$name . '_padding_right_val'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_right_cont'][$name . '_padding_right_val'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#states' => array(
@@ -285,7 +301,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_padding_right_val'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_right_cont'][$name . '_padding_right_unit'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_right_cont'][$name . '_padding_right_unit'] = array(
     '#type' => 'select',
     '#options' => $css_length_units,
     '#states' => array(
@@ -296,17 +312,17 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#default_value' => theme_get_setting($name . '_padding_right_unit'),
   );
   // Padding bottom
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_bottom_cont'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_bottom_cont'] = array(
     '#type' => 'container',
     '#prefix' => '<label>Bottom padding</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_bottom_cont'][$name . '_padding_bottom'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_bottom_cont'][$name . '_padding_bottom'] = array(
     '#type' => 'select',
     '#options' => $css_auto_or_other,
     '#default_value' => theme_get_setting($name . '_padding_bottom'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_bottom_cont'][$name . '_padding_bottom_val'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_bottom_cont'][$name . '_padding_bottom_val'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#states' => array(
@@ -316,7 +332,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_padding_bottom_val'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_bottom_cont'][$name . '_padding_bottom_unit'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_bottom_cont'][$name . '_padding_bottom_unit'] = array(
     '#type' => 'select',
     '#options' => $css_length_units,
     '#states' => array(
@@ -327,17 +343,17 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#default_value' => theme_get_setting($name . '_padding_bottom_unit'),
   );
   // Padding left
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_left_cont'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_left_cont'] = array(
     '#type' => 'container',
     '#prefix' => '<label>Left padding</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_left_cont'][$name . '_padding_left'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_left_cont'][$name . '_padding_left'] = array(
     '#type' => 'select',
     '#options' => $css_auto_or_other,
     '#default_value' => theme_get_setting($name . '_padding_left'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_left_cont'][$name . '_padding_left_val'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_left_cont'][$name . '_padding_left_val'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#states' => array(
@@ -347,7 +363,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_padding_left_val'),
   );
-  $form[$name . '_fieldset'][$name . '_layout_opts'][$name . '_padding_left_cont'][$name . '_padding_left_unit'] = array(
+  $form[$name . '_fieldset']['layout_options'][$name . '_padding_left_cont'][$name . '_padding_left_unit'] = array(
     '#type' => 'select',
     '#options' => $css_length_units,
     '#states' => array(
@@ -366,7 +382,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#tree' => FALSE,
   );
   // Background color options fieldset
-  $form[$name . '_fieldset'][$name . '_bg_color_opts'] = array(
+  $form[$name . '_fieldset']['bg_color_options'] = array(
     '#type' => 'fieldset',
     '#title' => t('Background color options'),
     '#states' => array(
@@ -377,7 +393,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
   );
   // Background color(s)
-  $form[$name . '_fieldset'][$name . '_bg_color_opts'][$name . '_bg_color'] = array(
+  $form[$name . '_fieldset']['bg_color_options'][$name . '_bg_color'] = array(
     '#type' => 'textarea',
     '#cols' => '15',
     '#rows' => '5',
@@ -387,7 +403,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#description' => t('Enter a valid CSS color value <em>e.g. red can be defined as #f00, #ff0000, rgb(255,0,0), rgba(255,0,0,0.0) or simply red. Write transparent for no color.</em>'),
   );
   // Background gradient direction
-  $form[$name . '_fieldset'][$name . '_bg_color_opts'][$name . '_bg_gradient'] = array(
+  $form[$name . '_fieldset']['bg_color_options'][$name . '_bg_gradient'] = array(
     '#type' => 'select',
     '#title' => t('Background gradient'),
     '#options' => array(
@@ -406,7 +422,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#tree' => FALSE,
   );
   // Background image options fieldset
-  $form[$name . '_fieldset'][$name . '_bg_image_opts'] = array(
+  $form[$name . '_fieldset']['bg_image_options'] = array(
     '#type' => 'fieldset',
     '#title' => t('Background image options'),
     '#states' => array(
@@ -422,25 +438,25 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     $bg_path = file_uri_target($bg_path);
   }
   // Background image file name (disabled to prevent data entry)
-  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_path'] = array(
+  $form[$name . '_fieldset']['bg_image_options'][$name . '_bg_path'] = array(
     '#type' => 'textfield',
     '#title' => t('Path to background image'),
     '#default_value' => $bg_path,
     '#disabled' => TRUE,
   );
   // Background image upload field
-  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_upload'] = array(
+  $form[$name . '_fieldset']['bg_image_options'][$name . '_bg_upload'] = array(
     '#type' => 'file',
     '#title' => t('Upload background image'),
     '#description' => t('Upload a new image for the background.'),
   );
   // Background position (X)
-  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_x_cont'] = array(
+  $form[$name . '_fieldset']['bg_image_options'][$name . '_bg_pos_x_cont'] = array(
     '#type' => 'container',
     '#prefix' => '<label>Background position (X)</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
-  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_x_cont'][$name . '_bg_pos_x'] = array(
+  $form[$name . '_fieldset']['bg_image_options'][$name . '_bg_pos_x_cont'][$name . '_bg_pos_x'] = array(
     '#type' => 'select',
     '#options' => array(
       'left' => t('Left'),
@@ -450,7 +466,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_bg_pos_x'),
   );
-  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_x_cont'][$name . '_bg_pos_x_val'] = array(
+  $form[$name . '_fieldset']['bg_image_options'][$name . '_bg_pos_x_cont'][$name . '_bg_pos_x_val'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#states' => array(
@@ -460,7 +476,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_bg_pos_x_val'),
   );
-  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_x_cont'][$name . '_bg_pos_x_unit'] = array(
+  $form[$name . '_fieldset']['bg_image_options'][$name . '_bg_pos_x_cont'][$name . '_bg_pos_x_unit'] = array(
     '#type' => 'select',
     '#options' => $css_length_units,
     '#states' => array(
@@ -471,12 +487,12 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#default_value' => theme_get_setting($name . '_bg_pos_x_unit'),
   );
   // Background position (Y)
-  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_y_cont'] = array(
+  $form[$name . '_fieldset']['bg_image_options'][$name . '_bg_pos_y_cont'] = array(
     '#type' => 'container',
     '#prefix' => '<label>Background position (Y)</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
-  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_y_cont'][$name . '_bg_pos_y'] = array(
+  $form[$name . '_fieldset']['bg_image_options'][$name . '_bg_pos_y_cont'][$name . '_bg_pos_y'] = array(
     '#type' => 'select',
     '#options' => array(
       'top' => t('Top'),
@@ -486,7 +502,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_bg_pos_y'),
   );
-  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_y_cont'][$name . '_bg_pos_y_val'] = array(
+  $form[$name . '_fieldset']['bg_image_options'][$name . '_bg_pos_y_cont'][$name . '_bg_pos_y_val'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#states' => array(
@@ -496,7 +512,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
     '#default_value' => theme_get_setting($name . '_bg_pos_y_val'),
   );
-  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_pos_y_cont'][$name . '_bg_pos_y_unit'] = array(
+  $form[$name . '_fieldset']['bg_image_options'][$name . '_bg_pos_y_cont'][$name . '_bg_pos_y_unit'] = array(
     '#type' => 'select',
     '#options' => $css_length_units,
     '#states' => array(
@@ -507,7 +523,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#default_value' => theme_get_setting($name . '_bg_pos_y_unit'),
   );
   // Background repeat
-  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_repeat'] = array(
+  $form[$name . '_fieldset']['bg_image_options'][$name . '_bg_repeat'] = array(
     '#type' => 'select',
     '#title' => t('Background repeat'),
     '#options' => array(
@@ -520,7 +536,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#default_value' => theme_get_setting($name . '_bg_repeat'),
   );
   // Background attachment
-  $form[$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_attachment'] = array(
+  $form[$name . '_fieldset']['bg_image_options'][$name . '_bg_attachment'] = array(
     '#type' => 'select',
     '#title' => t('Background attachment'),
     '#options' => array(
@@ -539,7 +555,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#tree' => FALSE,
   );
   // Foreground options fieldset
-  $form[$name . '_fieldset'][$name . '_fg_opts'] = array(
+  $form[$name . '_fieldset']['fg_options'] = array(
     '#type' => 'fieldset',
     '#title' => t('Foreground options'),
     '#states' => array(
@@ -550,14 +566,15 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
   );
   // Text color
-  $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_text_color'] = array(
+  $form[$name . '_fieldset']['fg_options'][$name . '_text_color'] = array(
     '#type' => 'textfield',
     '#size' => '15',
     '#title' => t('Text color'),
     '#default_value' => theme_get_setting($name . '_text_color'),
+    '#attributes' => array('class' => array('spectrum')), 
   );
   // Text decoration
-  $form[$name . '_fieldset'][$name . '_fg_opts'][$name . '_text_decoration'] = array(
+  $form[$name . '_fieldset']['fg_options'][$name . '_text_decoration'] = array(
     '#type' => 'select',
     '#title' => t('Text decoration'),
     '#options' => array(
@@ -578,7 +595,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#tree' => FALSE,
   );
   // Border options fieldset
-  $form[$name . '_fieldset'][$name . '_border_opts'] = array(
+  $form[$name . '_fieldset']['border_options'] = array(
     '#type' => 'fieldset',
     '#title' => t('Border options'),
     '#states' => array(
@@ -589,21 +606,22 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
   );
   // Border color
-  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_border_color'] = array(
+  $form[$name . '_fieldset']['border_options'][$name . '_border_color'] = array(
     '#type' => 'textfield',
     '#size' => '15',
     '#title' => t('Border color'),
     '#default_value' => theme_get_setting($name . '_border_color'),
+    '#attributes' => array('class' => array('spectrum')), 
   );
   // Border width
-  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_border_width'] = array(
+  $form[$name . '_fieldset']['border_options'][$name . '_border_width'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#title' => t('Border width'),
     '#default_value' => theme_get_setting($name . '_border_width'),
   );
   // Border style
-  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_border_style'] = array(
+  $form[$name . '_fieldset']['border_options'][$name . '_border_style'] = array(
     '#type' => 'select',
     '#title' => t('Border style'),
     '#options' => array(
@@ -620,31 +638,31 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#default_value' => theme_get_setting($name . '_border_style'),
   );
   // Borders container
-  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_borders_container'] = array(
+  $form[$name . '_fieldset']['border_options'][$name . '_borders_container'] = array(
     '#type' => 'container',
     '#prefix' => '<label>Apply borders to</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
   // Borders top
-  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_borders_container'][$name . '_border_top'] = array(
+  $form[$name . '_fieldset']['border_options'][$name . '_borders_container'][$name . '_border_top'] = array(
     '#type' => 'checkbox',
     '#title' => t('Top'),
     '#default_value' => theme_get_setting($name . '_border_top'),
   );
   // Borders right
-  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_borders_container'][$name . '_border_right'] = array(
+  $form[$name . '_fieldset']['border_options'][$name . '_borders_container'][$name . '_border_right'] = array(
     '#type' => 'checkbox',
     '#title' => t('Right'),
     '#default_value' => theme_get_setting($name . '_border_right'),
   );
   // Borders bottom
-  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_borders_container'][$name . '_border_bottom'] = array(
+  $form[$name . '_fieldset']['border_options'][$name . '_borders_container'][$name . '_border_bottom'] = array(
     '#type' => 'checkbox',
     '#title' => t('Bottom'),
     '#default_value' => theme_get_setting($name . '_border_bottom'),
   );
   // Borders left
-  $form[$name . '_fieldset'][$name . '_border_opts'][$name . '_borders_container'][$name . '_border_left'] = array(
+  $form[$name . '_fieldset']['border_options'][$name . '_borders_container'][$name . '_border_left'] = array(
     '#type' => 'checkbox',
     '#title' => t('Left'),
     '#default_value' => theme_get_setting($name . '_border_left'),
@@ -658,7 +676,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#tree' => FALSE,
   );
   // Rounded corner options fieldset
-  $form[$name . '_fieldset'][$name . '_radius_opts'] = array(
+  $form[$name . '_fieldset']['radius_options'] = array(
     '#type' => 'fieldset',
     '#title' => t('Rounded corner options'),
     '#states' => array(
@@ -669,38 +687,38 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
   );
   // Rounded corner radius
-  $form[$name . '_fieldset'][$name . '_radius_opts'][$name . '_radius'] = array(
+  $form[$name . '_fieldset']['radius_options'][$name . '_radius'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#title' => t('Rounded corner radius'),
     '#default_value' => theme_get_setting($name . '_radius'),
   );
   // Rounded corners container
-  $form[$name . '_fieldset'][$name . '_radius_opts'][$name . '_radius_container'] = array(
+  $form[$name . '_fieldset']['radius_options'][$name . '_radius_container'] = array(
     '#type' => 'container',
     '#prefix' => '<label>Apply rounded corners to</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
   // Rounded corner radius top-left
-  $form[$name . '_fieldset'][$name . '_radius_opts'][$name . '_radius_container'][$name . '_top_left_radius'] = array(
+  $form[$name . '_fieldset']['radius_options'][$name . '_radius_container'][$name . '_top_left_radius'] = array(
     '#type' => 'checkbox',
     '#title' => t('Top-left'),
     '#default_value' => theme_get_setting($name . '_top_left_radius'),
   );
   // Rounded corner radius top-right
-  $form[$name . '_fieldset'][$name . '_radius_opts'][$name . '_radius_container'][$name . '_top_right_radius'] = array(
+  $form[$name . '_fieldset']['radius_options'][$name . '_radius_container'][$name . '_top_right_radius'] = array(
     '#type' => 'checkbox',
     '#title' => t('Top-right'),
     '#default_value' => theme_get_setting($name . '_top_right_radius'),
   );
   // Rounded corner radius bottom-right
-  $form[$name . '_fieldset'][$name . '_radius_opts'][$name . '_radius_container'][$name . '_bottom_right_radius'] = array(
+  $form[$name . '_fieldset']['radius_options'][$name . '_radius_container'][$name . '_bottom_right_radius'] = array(
     '#type' => 'checkbox',
     '#title' => t('Bottom-right'),
     '#default_value' => theme_get_setting($name . '_bottom_right_radius'),
   );
   // Rounded corner radius bottom-left
-  $form[$name . '_fieldset'][$name . '_radius_opts'][$name . '_radius_container'][$name . '_bottom_left_radius'] = array(
+  $form[$name . '_fieldset']['radius_options'][$name . '_radius_container'][$name . '_bottom_left_radius'] = array(
     '#type' => 'checkbox',
     '#title' => t('Bottom-left'),
     '#default_value' => theme_get_setting($name . '_bottom_left_radius'),
@@ -714,7 +732,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#tree' => FALSE,
   );
   // Box shadow options fieldset
-  $form[$name . '_fieldset'][$name . '_box_shadow_opts'] = array(
+  $form[$name . '_fieldset']['box_shadow_options'] = array(
     '#type' => 'fieldset',
     '#title' => t('Box shadow options'),
     '#states' => array(
@@ -725,21 +743,21 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
   );
   // Box shadow distance
-  $form[$name . '_fieldset'][$name . '_box_shadow_opts'][$name . '_box_shadow_distance'] = array(
+  $form[$name . '_fieldset']['box_shadow_options'][$name . '_box_shadow_distance'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#title' => t('Distance'),
     '#default_value' => theme_get_setting($name . '_box_shadow_distance'),
   );
   // Box shadow blur
-  $form[$name . '_fieldset'][$name . '_box_shadow_opts'][$name . '_box_shadow_blur'] = array(
+  $form[$name . '_fieldset']['box_shadow_options'][$name . '_box_shadow_blur'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#title' => t('Blur'),
     '#default_value' => theme_get_setting($name . '_box_shadow_blur'),
   );
   // Box shadow color
-  $form[$name . '_fieldset'][$name . '_box_shadow_opts'][$name . '_box_shadow_color'] = array(
+  $form[$name . '_fieldset']['box_shadow_options'][$name . '_box_shadow_color'] = array(
     '#type' => 'textfield',
     '#size' => '15',
     '#title' => t('Color'),
@@ -754,7 +772,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#tree' => FALSE,
   );
   // Text shadow options fieldset
-  $form[$name . '_fieldset'][$name . '_text_shadow_opts'] = array(
+  $form[$name . '_fieldset']['text_shadow_options'] = array(
     '#type' => 'fieldset',
     '#title' => t('Text shadow options'),
     '#states' => array(
@@ -765,21 +783,21 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
   );
   // Text shadow distance
-  $form[$name . '_fieldset'][$name . '_text_shadow_opts'][$name . '_text_shadow_distance'] = array(
+  $form[$name . '_fieldset']['text_shadow_options'][$name . '_text_shadow_distance'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#title' => t('Distance'),
     '#default_value' => theme_get_setting($name . '_text_shadow_distance'),
   );
   // Text shadow blur
-  $form[$name . '_fieldset'][$name . '_text_shadow_opts'][$name . '_text_shadow_blur'] = array(
+  $form[$name . '_fieldset']['text_shadow_options'][$name . '_text_shadow_blur'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#title' => t('Blur'),
     '#default_value' => theme_get_setting($name . '_text_shadow_blur'),
   );
   // Text shadow color
-  $form[$name . '_fieldset'][$name . '_text_shadow_opts'][$name . '_text_shadow_color'] = array(
+  $form[$name . '_fieldset']['text_shadow_options'][$name . '_text_shadow_color'] = array(
     '#type' => 'textfield',
     '#size' => '15',
     '#title' => t('Color'),
@@ -794,7 +812,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#tree' => FALSE,
   );
   // Transition options fieldset
-  $form[$name . '_fieldset'][$name . '_transition_opts'] = array(
+  $form[$name . '_fieldset']['transition_options'] = array(
     '#type' => 'fieldset',
     '#title' => t('Transition options'),
     '#states' => array(
@@ -805,21 +823,21 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     ),
   );
   // Transition duration
-  $form[$name . '_fieldset'][$name . '_transition_opts'][$name . '_transition_duration'] = array(
+  $form[$name . '_fieldset']['transition_options'][$name . '_transition_duration'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#title' => t('Duration'),
     '#default_value' => theme_get_setting($name . '_transition_duration'),
   );
   // Transition delay
-  $form[$name . '_fieldset'][$name . '_transition_opts'][$name . '_transition_delay'] = array(
+  $form[$name . '_fieldset']['transition_options'][$name . '_transition_delay'] = array(
     '#type' => 'textfield',
     '#size' => '5',
     '#title' => t('Delay'),
     '#default_value' => theme_get_setting($name . '_transition_delay'),
   );
   // Transition function
-  $form[$name . '_fieldset'][$name . '_transition_opts'][$name . '_transition_function'] = array(
+  $form[$name . '_fieldset']['transition_options'][$name . '_transition_function'] = array(
     '#type' => 'select',
     '#title' => t('Function'),
     '#options' => array(
@@ -832,19 +850,19 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
     '#default_value' => theme_get_setting($name . '_transition_function'),
   );
   // Transition container
-  $form[$name . '_fieldset'][$name . '_transition_opts'][$name . '_transition_container'] = array(
+  $form[$name . '_fieldset']['transition_options'][$name . '_transition_container'] = array(
     '#type' => 'container',
     '#prefix' => '<label>Apply transition to</label>',    
     '#attributes' => array('class' => array('container-inline')), 
   );
   // Transition color
-  $form[$name . '_fieldset'][$name . '_transition_opts'][$name . '_transition_container'][$name . '_transition_fg_color'] = array(
+  $form[$name . '_fieldset']['transition_options'][$name . '_transition_container'][$name . '_transition_fg_color'] = array(
     '#type' => 'checkbox',
     '#title' => t('Color'),
     '#default_value' => theme_get_setting($name . '_transition_fg_color'),
   );
   // Transition background color
-  $form[$name . '_fieldset'][$name . '_transition_opts'][$name . '_transition_container'][$name . '_transition_bg_color'] = array(
+  $form[$name . '_fieldset']['transition_options'][$name . '_transition_container'][$name . '_transition_bg_color'] = array(
     '#type' => 'checkbox',
     '#title' => t('Background color'),
     '#default_value' => theme_get_setting($name . '_transition_bg_color'),
@@ -861,7 +879,7 @@ function enso_light_selector_bg_save(&$form, &$form_state, $css_selector_name) {
   $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($css_selector_name));
 
   // Get the previous value
-  $previous = 'public://' . $form['enso'][$name][$name . '_fieldset'][$name . '_bg_image_opts'][$name . '_bg_path']['#default_value'];
+  $previous = 'public://' . $form['enso'][$name][$name . '_fieldset']['bg_image_options'][$name . '_bg_path']['#default_value'];
   $file = file_save_upload($name . '_bg_upload');
   if ($file) {
     $parts = pathinfo($file->filename);
@@ -939,35 +957,9 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
     if ($settings[$name . '_use_bg_image'])  {
 
       $bg_url = 'url(\'' . file_create_url($settings[$name . '_bg_path']) . '\')';
-      /*$bg_position = $settings[$name . '_bg_position'];
-      $bg_attachment = $settings[$name . '_bg_attachment'];
-      $bg_repeat = $settings[$name . '_bg_repeat'];*/
 
-      // Background position X
-      if ($settings[$name . '_bg_pos_x'] == 'other') {
-        if ($settings[$name . '_bg_pos_x_val']) {
-          $bg_pos_x = $settings[$name . '_bg_pos_x_val'] . $settings[$name . '_bg_pos_x_unit'];
-        }
-        else {
-          $bg_pos_x = '';
-        }
-      }
-      else {
-        $bg_pos_x = $settings[$name . '_bg_pos_x'];
-      }
-
-      // Background position Y
-      if ($settings[$name . '_bg_pos_y'] == 'other') {
-        if ($settings[$name . '_bg_pos_y_val']) {
-          $bg_pos_y = $settings[$name . '_bg_pos_y_val'] . $settings[$name . '_bg_pos_y_unit'];
-        }
-        else {
-          $bg_pos_y = '';
-        }
-      }
-      else {
-        $bg_pos_y = $settings[$name . '_bg_pos_y'];
-      }
+      $bg_pos_x = _enso_light_get_css_value($settings[$name . '_bg_pos_x'], $settings[$name . '_bg_pos_x_val'], $settings[$name . '_bg_pos_x_unit']);
+      $bg_pos_y = _enso_light_get_css_value($settings[$name . '_bg_pos_y'], $settings[$name . '_bg_pos_y_val'], $settings[$name . '_bg_pos_y_unit']);
 
       $css .= $tab . 'background-image: ' . $bg_url . $eol;
       $css .= $tab . 'background-position: ' . $bg_pos_x . ' ' . $bg_pos_y . $eol;
@@ -1092,21 +1084,24 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
 }
 
 
-function _enso_light_get_css_value($property, $value, $unit) {
-  if ($property == 'unspecified') {
-    $css_rule = '';
+function _enso_light_get_css_value($type, $value, $units) {
+  // User hasn't selected anything
+  if ($type == 'unspecified') {
+    $css_value = '';
   }
-  else if ($property == 'other') {
+  // User has opted to specify an arbitrary numeric value
+  else if ($type == 'other') {
     if ($value) {
-      $css_rule = $value . $unit;
+      $css_value = $value . $units;
     }
     else {
-      $css_rule = '';
+      $css_value = '';
     }
   }
+  // User has selected a non-numeric type e.g. 'left', 'right', 'auto', 'inherit' etc
   else {
-    $css_rule = $property;
+    $css_value = $type;
   }
 
-  return $css_rule; 
+  return $css_value; 
 }

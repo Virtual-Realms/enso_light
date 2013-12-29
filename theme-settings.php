@@ -15,6 +15,22 @@ require_once($path_to_enso_light . '/inc/enso_light_selector_style.inc');
  * @param $form_state: A keyed array containing the current state of the form.
  */
 function enso_light_form_system_theme_settings_alter(&$form, &$form_state)  {
+
+  // Add spectrum color picker js and css. See http://bgrins.github.io/spectrum
+  // Requires libraries api and spectrum installed in libraries/bgrins-spectrum as per color_field install instructions
+  drupal_add_js(libraries_get_path('bgrins-spectrum') . '/spectrum.js');
+  drupal_add_css(libraries_get_path('bgrins-spectrum') . '/spectrum.css');
+  $spectrum_js = 'jQuery(".spectrum").spectrum({
+    showInput: true,
+    allowEmpty: true,
+    showAlpha: true,
+    showInitial: true,
+    showInput: true,
+    clickoutFiresChange: true,
+    showButtons: false
+  });';
+  drupal_add_js($spectrum_js, array('type' => 'inline', 'scope' => 'footer', 'weight' => 5));
+
   $form['enso'] = array(
     '#type' => 'fieldset',
     '#title' => t('Ensō Custom Settings'),
