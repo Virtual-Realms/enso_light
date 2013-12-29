@@ -113,7 +113,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
   $form[$name . '_fieldset']['layout_options'][$name . '_margin_top_cont'] = array(
     '#type' => 'container',
     '#prefix' => '<label>Margins</label>',    
-    '#attributes' => array('class' => array('container-inline')), 
+    '#attributes' => array('class' => array('container-inline label-field-align')), 
   );
   $form[$name . '_fieldset']['layout_options'][$name . '_margin_top_cont'][$name . '_margin_top'] = array(
     '#type' => 'select',
@@ -148,7 +148,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
   $form[$name . '_fieldset']['layout_options'][$name . '_margin_right_cont'] = array(
     '#type' => 'container',
     //'#prefix' => '<label>Right margin</label>',    
-    '#attributes' => array('class' => array('container-inline')), 
+    '#attributes' => array('class' => array('container-inline label-field-align')), 
   );
   $form[$name . '_fieldset']['layout_options'][$name . '_margin_right_cont'][$name . '_margin_right'] = array(
     '#type' => 'select',
@@ -183,7 +183,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
   $form[$name . '_fieldset']['layout_options'][$name . '_margin_bottom_cont'] = array(
     '#type' => 'container',
     //'#prefix' => '<label>Bottom margin</label>',    
-    '#attributes' => array('class' => array('container-inline')), 
+    '#attributes' => array('class' => array('container-inline label-field-align')), 
   );
   $form[$name . '_fieldset']['layout_options'][$name . '_margin_bottom_cont'][$name . '_margin_bottom'] = array(
     '#type' => 'select',
@@ -218,7 +218,7 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
   $form[$name . '_fieldset']['layout_options'][$name . '_margin_left_cont'] = array(
     '#type' => 'container',
     //'#prefix' => '<label>Left margin</label>',    
-    '#attributes' => array('class' => array('container-inline')), 
+    '#attributes' => array('class' => array('container-inline label-field-align')), 
   );
   $form[$name . '_fieldset']['layout_options'][$name . '_margin_left_cont'][$name . '_margin_left'] = array(
     '#type' => 'select',
@@ -252,11 +252,12 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
   // Padding top
   $form[$name . '_fieldset']['layout_options'][$name . '_padding_top_cont'] = array(
     '#type' => 'container',
-    '#prefix' => '<label>Top padding</label>',    
-    '#attributes' => array('class' => array('container-inline')), 
+    '#prefix' => '<label>Padding</label>',    
+    '#attributes' => array('class' => array('container-inline label-field-align')), 
   );
   $form[$name . '_fieldset']['layout_options'][$name . '_padding_top_cont'][$name . '_padding_top'] = array(
     '#type' => 'select',
+    '#title' => 'Top',
     '#options' => $css_auto_or_other,
     '#default_value' => theme_get_setting($name . '_padding_top'),
   );
@@ -283,11 +284,12 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
   // Padding right
   $form[$name . '_fieldset']['layout_options'][$name . '_padding_right_cont'] = array(
     '#type' => 'container',
-    '#prefix' => '<label>Right padding</label>',    
-    '#attributes' => array('class' => array('container-inline')), 
+    //'#prefix' => '<label>Right</label>',    
+    '#attributes' => array('class' => array('container-inline label-field-align')), 
   );
   $form[$name . '_fieldset']['layout_options'][$name . '_padding_right_cont'][$name . '_padding_right'] = array(
     '#type' => 'select',
+    '#title' => 'Right',
     '#options' => $css_auto_or_other,
     '#default_value' => theme_get_setting($name . '_padding_right'),
   );
@@ -314,11 +316,12 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
   // Padding bottom
   $form[$name . '_fieldset']['layout_options'][$name . '_padding_bottom_cont'] = array(
     '#type' => 'container',
-    '#prefix' => '<label>Bottom padding</label>',    
-    '#attributes' => array('class' => array('container-inline')), 
+    //'#prefix' => '<label>Bottom</label>',    
+    '#attributes' => array('class' => array('container-inline label-field-align')), 
   );
   $form[$name . '_fieldset']['layout_options'][$name . '_padding_bottom_cont'][$name . '_padding_bottom'] = array(
     '#type' => 'select',
+    '#title' => 'Bottom',
     '#options' => $css_auto_or_other,
     '#default_value' => theme_get_setting($name . '_padding_bottom'),
   );
@@ -345,11 +348,12 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
   // Padding left
   $form[$name . '_fieldset']['layout_options'][$name . '_padding_left_cont'] = array(
     '#type' => 'container',
-    '#prefix' => '<label>Left padding</label>',    
-    '#attributes' => array('class' => array('container-inline')), 
+    //'#prefix' => '<label>Left</label>',    
+    '#attributes' => array('class' => array('container-inline label-field-align')), 
   );
   $form[$name . '_fieldset']['layout_options'][$name . '_padding_left_cont'][$name . '_padding_left'] = array(
     '#type' => 'select',
+    '#title' => 'Left',
     '#options' => $css_auto_or_other,
     '#default_value' => theme_get_setting($name . '_padding_left'),
   );

@@ -1,5 +1,12 @@
 
-/* Ensure multiple background spectrum color pickers are displayed inline nicely */
+/* Ensure multiple inline spectrum color pickers are displayed nicely */
 .container-inline div.sp-replacer {
   display: inline-block;
+}
+
+/* Vertically align fields adjacent to label */ 
+.container-inline.label-field-align label {
+  display: inline-block;
+  font-weight: normal;
+  width: 100px;
 }
