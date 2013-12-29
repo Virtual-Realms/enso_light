@@ -1,0 +1,5 @@
+
+/* Ensure multiple background spectrum color pickers are displayed inline nicely */
+.container-inline div.sp-replacer {
+  display: inline-block;
+}

@@ -32,6 +32,9 @@ function enso_light_form_system_theme_settings_alter(&$form, &$form_state)  {
   });';
   drupal_add_js($spectrum_js, array('type' => 'inline', 'scope' => 'footer', 'weight' => 5));
 
+  // Add styling for this form
+  drupal_add_css(drupal_get_path('theme', 'enso_light') . '/css/theme-settings.css');
+
   $form['enso'] = array(
     '#type' => 'fieldset',
     '#title' => t('Ensō Custom Settings'),

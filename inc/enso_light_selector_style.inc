@@ -392,15 +392,41 @@ function enso_light_selector_form($css_selector, $css_selector_name) {
       ),
     ),
   );
-  // Background color(s)
-  $form[$name . '_fieldset']['bg_color_options'][$name . '_bg_color'] = array(
-    '#type' => 'textarea',
-    '#cols' => '15',
-    '#rows' => '5',
-    '#resizable' => TRUE,
-    '#title' => t('Background color(s)'),
-    '#default_value' => theme_get_setting($name . '_bg_color'),
-    '#description' => t('Enter a valid CSS color value <em>e.g. red can be defined as #f00, #ff0000, rgb(255,0,0), rgba(255,0,0,0.0) or simply red. Write transparent for no color.</em>'),
+  // Background colors container
+  $form[$name . '_fieldset']['bg_color_options']['container'] = array(
+    '#type' => 'container',
+    '#prefix' => '<label>Background colors</label>',    
+    '#attributes' => array('class' => array('container-inline')), 
+  );
+  // Background color 1
+  $form[$name . '_fieldset']['bg_color_options']['container'][$name . '_bg_color_1'] = array(
+    '#type' => 'textfield',
+    '#default_value' => theme_get_setting($name . '_bg_color_1'),
+    '#attributes' => array('class' => array('spectrum')), 
+  );
+  // Background color 2
+  $form[$name . '_fieldset']['bg_color_options']['container'][$name . '_bg_color_2'] = array(
+    '#type' => 'textfield',
+    '#default_value' => theme_get_setting($name . '_bg_color_2'),
+    '#attributes' => array('class' => array('spectrum')), 
+  );
+  // Background color 3
+  $form[$name . '_fieldset']['bg_color_options']['container'][$name . '_bg_color_3'] = array(
+    '#type' => 'textfield',
+    '#default_value' => theme_get_setting($name . '_bg_color_3'),
+    '#attributes' => array('class' => array('spectrum')), 
+  );
+  // Background color 4
+  $form[$name . '_fieldset']['bg_color_options']['container'][$name . '_bg_color_4'] = array(
+    '#type' => 'textfield',
+    '#default_value' => theme_get_setting($name . '_bg_color_4'),
+    '#attributes' => array('class' => array('spectrum')), 
+  );
+  // Background color 5
+  $form[$name . '_fieldset']['bg_color_options']['container'][$name . '_bg_color_5'] = array(
+    '#type' => 'textfield',
+    '#default_value' => theme_get_setting($name . '_bg_color_5'),
+    '#attributes' => array('class' => array('spectrum')), 
   );
   // Background gradient direction
   $form[$name . '_fieldset']['bg_color_options'][$name . '_bg_gradient'] = array(
@@ -969,8 +995,15 @@ function enso_light_selector_generate_css(&$form_state, $css_selector, $css_sele
 
     // Generate background colors
     if ($settings[$name . '_use_bg_colors'])  {
-      $bg_colors = explode("\n", $settings[$name . '_bg_color']);
+      //$bg_colors = explode("\n", $settings[$name . '_bg_color']);
       //$bg_gradient = $settings[$name . '_bg_gradient'];
+      $bg_colors = array();
+      if ($settings[$name . '_bg_color_1']) $bg_colors[] = $settings[$name . '_bg_color_1'];
+      if ($settings[$name . '_bg_color_2']) $bg_colors[] = $settings[$name . '_bg_color_2'];
+      if ($settings[$name . '_bg_color_3']) $bg_colors[] = $settings[$name . '_bg_color_3'];
+      if ($settings[$name . '_bg_color_4']) $bg_colors[] = $settings[$name . '_bg_color_4'];
+      if ($settings[$name . '_bg_color_5']) $bg_colors[] = $settings[$name . '_bg_color_5'];
+      
       $bg_url = $settings[$name . '_use_bg_image'] ? $bg_url . ',' : '';
 
       if ($settings[$name . '_bg_gradient'] == 'none' && count($bg_colors) >= 1) {
