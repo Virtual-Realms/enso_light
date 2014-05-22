@@ -2,8 +2,9 @@
 
 $css = <<<CSS
 /* this is a comment */
-#selector .something > tag.something-else, .selector-second-line { 
-display:block; 
+#selector .something > tag.something-else, 
+.selector-second-line { 
+display: block; 
 width:100px; 
 color: #ff0000; }
 
@@ -20,7 +21,11 @@ function css2array($css)
   $results = array();
 
   // Find CSS comments and rules using regex voodoo
-  preg_match_all('#/\*(.*?)\*/(.+?)\s?\{\s?(.+?)\s?\}#sm', $css, $matches);
+  $regex_comment = '/\*(.*?)\*/';
+  $regex_selector = '(.*?)';
+  $regex_declarations = '\{(.*?)\}';
+  $regex_pattern = '#' . $regex_comment . $regex_selector . $regex_declarations . '#sm';
+  preg_match_all($regex_pattern, $css, $matches);
 
   // Process each match 
   foreach($matches[0] AS $i=>$match)
